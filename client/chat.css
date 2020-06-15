@@ -1,0 +1,291 @@
+*
+{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: monospace, sans-serif;
+}
+
+html, body
+{
+    width: 100vw;
+    height: 100vh;
+    background: #181818;
+}
+
+.chat-info
+{
+    position: absolute;
+    left: 0;
+    z-index: 100;
+    width: 15%;
+    height: 100%;
+    box-shadow: #000 0 0 10px;
+    background: #3d3d3d;
+}
+
+.info-header
+{
+    background: #2b2b2b;
+    height: 60px;
+    text-align: center;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    color: #eee;
+}
+
+.info-container
+{
+    height: calc(100%-60px);
+    width: 100%;
+    padding: 10px 10px;
+}
+
+.info-container .users-title
+{
+    color: #ddd;
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.info-container .users-list
+{
+    margin-left: 15px;
+    list-style: none;
+    color: #ddd;
+    font-size: 16px;
+}
+
+.chat
+{
+    position: absolute;
+    left: 15%;
+    top: 0;
+    width: 85%;
+    height: 100%;
+}
+
+.chat-box
+{
+    height: 90%;
+    width: 100%;
+    background: #181818;
+    padding: 10px 10px;
+    overflow-y: auto;
+}
+
+.chat-box .msg
+{
+    background: #222;
+    padding: 10px 10px;
+    margin-bottom: 10px;
+}
+
+.chat-box .join-msg
+{   
+    background: #3d3d3d;
+    padding: 10px 10px;
+    margin-bottom: 10px;
+    color: white;
+    font-weight: 600;
+    font-size: 18px;
+    text-align: center;
+}
+
+.chat-box .msg .username
+{
+    color: white;
+    font-weight: 600;
+    font-size: 18px;
+    background: #222;
+}
+
+.chat-box .msg .text
+{
+    color: white;
+    font-size: 18px;
+    background: #222;
+    font-weight: 300;
+    overflow-wrap: break-word;
+}
+
+.chat-box .msg img
+{
+    display: block;
+    max-width: 10%;
+}
+
+.msg-input
+{
+    height: 60px;
+    width: 100%;
+    background: #222;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.msg-input input
+{
+    width: 85%;
+    height: 40px;
+    border-radius: 2rem;
+    border: 1px solid #ddd;
+    outline: none;
+    padding: 5px 15px;
+    font-size: 20px;
+}
+
+.msg-input .file-input
+{
+    border: 0;
+    clip: rect(0, 0, 0, 0);
+    height: 1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute !important;
+    white-space: nowrap;
+    width: 1px; 
+}
+
+.msg-input .custom-file-input
+{
+    position: relative;
+    width: 30px;
+    height: 25px;
+    border: 1px solid #4797ff;
+    cursor: pointer;
+    background: url("./image-icon.svg");
+    background-position: 0 0;
+}
+
+.image-icon
+{
+    position: absolute;
+    fill: white;
+    width: 90% !important;
+    height: 100% !important;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
+}
+
+.msg-input .file-input:focus + .custom-file-input,
+.msg-input .file-input + .custom-file-input:hover
+{
+    background: #4797ff;
+}
+
+.msg-input .custom-file-input:active
+{
+    background: #0f77ff;
+}
+
+.msg-input .btn-send
+{
+    width: 35px;
+    height: 35px;
+    background: #00aadd;
+    clip-path: polygon(0% 0%, 100% 50%, 0% 100%, 20% 50%);
+    cursor: pointer;
+}
+
+.big-image-container
+{
+    position: absolute;
+    transform: translate(-50%, -50%);
+    top: 45%;
+    left: 50%;
+    width: 90%;
+    height: 85%;
+    z-index: 99999;
+    display: none;
+    background: #333;
+}
+
+.big-image-container .big-image
+{
+    position: absolute;
+    max-width: 95%;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
+}
+
+.big-image-container .close-bg
+{
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    cursor: pointer;
+    width: 50px;
+    height: 50px;
+}
+
+.big-image-container .close-bg:hover .close-icon
+{
+    background: white;
+}
+
+.big-image-container .close-icon
+{
+    position: relative;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
+    color: #1b1fff;
+    font-size: 20px;
+    background: #ffffff8f;
+    width: 30px;
+    height: 30px;
+    clip-path: polygon(0 10%, 10% 0, 50% 40%, 90% 0, 100% 10%, 60% 50%, 100% 90%, 90% 100%, 50% 60%, 10% 100%, 0 90%, 40% 50%);
+}
+
+@media screen and (max-width: 780px)
+{
+    html, body
+    {
+        display: block;
+    }
+
+    .chat
+    {
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 64%;
+    }
+
+    .chat-box
+    {
+        height: 100%;
+        width: 100%;
+        left: 0;
+        top: 0;
+    }
+
+    .msg-input input
+    {
+        width: 70%;
+    }
+
+    .chat-box .msg img
+    {
+        max-width: 20%;
+    }
+
+    .chat-info
+    {
+        position: absolute;
+        bottom: -10%;
+        width: 100vw;
+        height: 30%;
+    }
+
+    .big-image-container
+    {
+        top: 50%;
+        height: 90%;
+    }
+}
