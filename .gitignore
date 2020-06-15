@@ -1,3 +1,11 @@
+#Other
+*.zip
+*.bat
+
+#Git
+.gitattributes
+.gitignore
+
 # Logs
 logs
 *.log
