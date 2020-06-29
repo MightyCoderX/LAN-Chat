@@ -38,6 +38,18 @@ io.on('connection', socket =>
 
         io.emit('user_joined', username);
     
+        socket.on('typing', typing =>
+        {
+            console.log(typing);
+            if(typing)
+            {
+                io.emit('typing', {username, typing: true});
+                console.log(`${username} is typing...`);
+            }
+
+            io.emit('typing', {username, typing: true});
+        });
+
         socket.on('send_message', content =>
         {
             let msg = { username, content };

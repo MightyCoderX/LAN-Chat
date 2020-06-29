@@ -45,6 +45,14 @@ const usersList = document.querySelector('.users-list');
 const bigImageContainer = document.querySelector('.big-image-container');
 const bigImage = document.querySelector('.big-image');
 
+txtMsg.addEventListener('change', e =>
+{
+    if(txtMsg.value)
+    {
+        socket.emit('typing', true);
+    }
+});
+
 txtMsg.focus();
 customInput.addEventListener('click', e =>
 {
@@ -78,6 +86,7 @@ function sendMessage()
 
     if(!txtMsg.value.trim()) return;
 
+    socket.emit('typing', false);
     socket.emit('send_message', txtMsg.value.trim());
     console.log(username, txtMsg.value);
     txtMsg.value = '';
@@ -110,6 +119,21 @@ socket.on('user_joined', username =>
 socket.on('user_left', username =>
 {
     addLeft(username);
+});
+
+socket.on('typing', data =>
+{
+    let typingElem = createIsTyping(data.username);
+    if(data.typing)
+    {
+        console.log(`${data.username} is typing...`);
+        if(chatBox.contains(typingElem)) return;
+        chatBox.appendChild(typingElem);
+    }
+    else
+    {
+        chatBox.removeChild(typingElem);
+    }
 });
 
 socket.on('message_received', data =>
@@ -185,6 +209,19 @@ function addLeft(uname)
 
     chatBox.appendChild(leftMsgDiv);
     chatBox.scrollTo(0, chatBox.scrollHeight+100);
+}
+
+function createIsTyping(uname)
+{
+    const isTypingDiv = document.createElement('div');
+    isTypingDiv.classList.add('join-msg');
+
+    if(uname != username)
+    {
+        isTypingDiv.textContent = `${uname} is typing...`;
+    }
+
+    return isTypingDiv;
 }
 
 
