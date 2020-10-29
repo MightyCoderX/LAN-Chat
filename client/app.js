@@ -78,7 +78,7 @@ function sendMessage()
     if(imageInput.files[0])
     {
         socket.emit('send_image', { text: txtMsg.value, buffer: imageInput.files[0] });
-        imageInput.value = '';
+        imageInput.files = [];
         console.log(username, txtMsg.value, imageInput.files);
         txtMsg.value = '';
         return;
@@ -123,17 +123,17 @@ socket.on('user_left', username =>
 
 socket.on('typing', data =>
 {
-    let typingElem = createIsTyping(data.username);
-    if(data.typing)
-    {
-        console.log(`${data.username} is typing...`);
-        if(chatBox.contains(typingElem)) return;
-        chatBox.appendChild(typingElem);
-    }
-    else
-    {
-        chatBox.removeChild(typingElem);
-    }
+    // let typingElem = createIsTyping(data.username);
+    // if(data.typing)
+    // {
+    //     console.log(`${data.username} is typing...`);
+    //     if(chatBox.contains(typingElem)) return;
+    //     chatBox.appendChild(typingElem);
+    // }
+    // else
+    // {
+    //     chatBox.removeChild(typingElem);
+    // }
 });
 
 socket.on('message_received', data =>
