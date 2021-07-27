@@ -1,2 +1,2 @@
-# LAN_Chat
+# Lan Chat
  A simple socket chat
