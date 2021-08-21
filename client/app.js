@@ -78,8 +78,8 @@ function sendMessage()
     if(imageInput.files[0])
     {
         socket.emit('send_image', { text: txtMsg.value, buffer: imageInput.files[0] });
-        imageInput.files = [];
         console.log(username, txtMsg.value, imageInput.files);
+        imageInput.files = [];
         txtMsg.value = '';
         return;
     }
