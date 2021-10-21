@@ -34,20 +34,15 @@ io.on('connection', socket =>
         users.push(username);
 
         console.log(`${username} joined the chat!`);
-        console.log(users);
+        console.log('Users:', users);
 
         io.emit('user_joined', username);
     
         socket.on('typing', typing =>
         {
-            console.log(typing);
-            if(typing)
-            {
-                io.emit('typing', {username, typing: true});
-                console.log(`${username} is typing...`);
-            }
+            console.log(`${username} is typing...`);
 
-            io.emit('typing', {username, typing: true});
+            io.emit('typing', { username, typing });
         });
 
         socket.on('send_message', content =>

@@ -45,7 +45,7 @@ const usersList = document.querySelector('.users-list');
 const bigImageContainer = document.querySelector('.big-image-container');
 const bigImage = document.querySelector('.big-image');
 
-txtMsg.addEventListener('change', e =>
+txtMsg.addEventListener('keydown', e =>
 {
     if(txtMsg.value)
     {
@@ -79,15 +79,16 @@ function sendMessage()
     {
         socket.emit('send_image', { text: txtMsg.value, buffer: imageInput.files[0] });
         console.log(username, txtMsg.value, imageInput.files);
-        imageInput.files = [];
+        imageInput.value = '';
         txtMsg.value = '';
+        socket.emit('typing', false);
         return;
     }
 
     if(!txtMsg.value.trim()) return;
 
-    socket.emit('typing', false);
     socket.emit('send_message', txtMsg.value.trim());
+    socket.emit('typing', false);
     console.log(username, txtMsg.value);
     txtMsg.value = '';
 }
@@ -123,17 +124,30 @@ socket.on('user_left', username =>
 
 socket.on('typing', data =>
 {
-    // let typingElem = createIsTyping(data.username);
-    // if(data.typing)
-    // {
-    //     console.log(`${data.username} is typing...`);
-    //     if(chatBox.contains(typingElem)) return;
-    //     chatBox.appendChild(typingElem);
-    // }
+    if(data.username == username) return;
+    
+    let typingElem = chatBox.querySelector(`#${username}`);
+
+    if(!typingElem)
+    {
+        typingElem = createIsTyping(data.username);
+        typingElem.id = data.username;
+    }
+
+    console.log(data.typing, typingElem);
+
+    if(data.typing)
+    {
+        console.log(`${data.username} is typing...`);
+        if(chatBox.contains(typingElem)) return;
+        chatBox.appendChild(typingElem);
+        chatBox.scrollTo(0, chatBox.scrollHeight+100);
+    }
     // else
     // {
     //     chatBox.removeChild(typingElem);
     // }
+
 });
 
 socket.on('message_received', data =>
@@ -147,14 +161,14 @@ socket.on('image_received', data =>
     addMessage(data.username, data.text, data.buffer);
 });
 
-function addMessage(username, text, imageBuffer)
+function addMessage(uname, text, imageBuffer)
 {
     const messageDiv = document.createElement('div');
     messageDiv.classList.add('msg');
 
     const spanUsername = document.createElement('span');
     spanUsername.classList.add('username');
-    spanUsername.textContent = username + ' > ';
+    spanUsername.textContent = uname + ' > ';
 
     const spanText = document.createElement('span');
     spanText.classList.add('text');
@@ -175,7 +189,16 @@ function addMessage(username, text, imageBuffer)
         messageDiv.appendChild(image);
     }
 
-    chatBox.appendChild(messageDiv);
+    if(username === uname)
+    {
+        chatBox.appendChild(messageDiv);
+    }
+    else
+    {
+        console.log(chatBox.children, { uname, username });
+        chatBox.querySelector(`#${uname}`).replaceWith(messageDiv);
+    }
+
     chatBox.scrollTo(0, chatBox.scrollHeight+100);
 }
 
@@ -211,15 +234,14 @@ function addLeft(uname)
     chatBox.scrollTo(0, chatBox.scrollHeight+100);
 }
 
-function createIsTyping(uname)
+function createIsTyping(username)
 {
     const isTypingDiv = document.createElement('div');
     isTypingDiv.classList.add('join-msg');
 
-    if(uname != username)
-    {
-        isTypingDiv.textContent = `${uname} is typing...`;
-    }
+
+    isTypingDiv.textContent = `${username} is typing...`;
+
 
     return isTypingDiv;
 }
