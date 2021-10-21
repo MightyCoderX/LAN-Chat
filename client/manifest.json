@@ -1,0 +1,21 @@
+{
+  "$schema": "http://json.schemastore.org/web-manifest",
+  "short_name": "LAN-Chat",
+  "name": "LAN Chat",
+  "description": "A basic socket chat",
+  "lang": "en-US",
+  "scope": "/",
+  "icons": [
+    {
+        "src": "img/icon.svg",
+        "sizes": "144x144",
+        "type": "image/svg",
+        "purpose": "any"
+    }
+  ],
+  "background_color": "#222",
+  "theme_color": "#333",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "any"
+}

@@ -1,6 +1,16 @@
 const socket = io(location.origin);
 
-let storage = localStorage;
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js')
+    .then(reg =>
+    {
+      console.log('Registration successful, scope is:', registration.scope);
+    })
+    .catch(err =>
+    {
+      console.error('Service worker registration failed, error:', error);
+    });
+}
 
 function joinChat()
 {
