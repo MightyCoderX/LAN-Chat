@@ -93,11 +93,11 @@ function sendMessage()
     txtMsg.value = '';
 }
 
-socket.on('all_messages', data =>
+socket.on('all_messages', messages =>
 {
-    for(let msg of data)
+    for(let msg of messages)
     {
-        addMessage(msg.username, msg.content, msg.buffer);
+        addMessage(msg.user, msg.content, msg.buffer);
     }
 });
 
@@ -107,68 +107,67 @@ socket.on('all_users', users =>
     users.map(user =>
     {
         const li = document.createElement('li');
-        li.textContent = user;
+        li.textContent = user.username;
         usersList.appendChild(li);
     });
 });
 
-socket.on('user_joined', username =>
+socket.on('user_joined', user =>
 {
-    addJoined(username);
+    addJoined(user.username);
 });
 
-socket.on('user_left', username =>
+socket.on('user_left', user =>
 {
-    addLeft(username);
+    addLeft(user.username);
 });
 
-socket.on('typing', data =>
+socket.on('typing', ({ user, typing }) =>
 {
-    if(data.username == username) return;
+    if(user.username == username) return;
     
-    let typingElem = chatBox.querySelector(`#${username}`);
+    let typingElem = chatBox.querySelector(`#${user.id}`);
+    console.log({ typingElem, user, typing });
 
     if(!typingElem)
     {
-        typingElem = createIsTyping(data.username);
-        typingElem.id = data.username;
+        typingElem = createIsTyping(user);
     }
 
-    console.log(data.typing, typingElem);
+    console.log(typing, typingElem);
 
-    if(data.typing)
+    if(typing)
     {
-        console.log(`${data.username} is typing...`);
+        console.log(`${user.username} is typing...`);
         if(chatBox.contains(typingElem)) return;
         chatBox.appendChild(typingElem);
         chatBox.scrollTo(0, chatBox.scrollHeight+100);
     }
-    // else
-    // {
-    //     chatBox.removeChild(typingElem);
-    // }
+    else
+    {
+        chatBox.removeChild(typingElem);
+    }
 
 });
 
-socket.on('message_received', data =>
+socket.on('message_received', ({ user, content }) =>
 {
-    addMessage(data.username, data.content, null);
+    addMessage(user, content, null);
 });
 
-socket.on('image_received', data =>
+socket.on('image_received', ({ user, text, buffer }) =>
 {   
-    console.log(data);
-    addMessage(data.username, data.text, data.buffer);
+    addMessage(user, text, buffer);
 });
 
-function addMessage(uname, text, imageBuffer)
+function addMessage(user, text, imageBuffer)
 {
     const messageDiv = document.createElement('div');
     messageDiv.classList.add('msg');
 
     const spanUsername = document.createElement('span');
     spanUsername.classList.add('username');
-    spanUsername.textContent = uname + ' > ';
+    spanUsername.textContent = user.username + ' > ';
 
     const spanText = document.createElement('span');
     spanText.classList.add('text');
@@ -189,14 +188,13 @@ function addMessage(uname, text, imageBuffer)
         messageDiv.appendChild(image);
     }
 
-    if(username === uname)
+    if(username === user.username || !chatBox.querySelector(`#${user.username}`))
     {
         chatBox.appendChild(messageDiv);
     }
     else
     {
-        console.log(chatBox.children, { uname, username });
-        chatBox.querySelector(`#${uname}`).replaceWith(messageDiv);
+        chatBox.querySelector(`#${user.username}`).replaceWith(messageDiv);
     }
 
     chatBox.scrollTo(0, chatBox.scrollHeight+100);
@@ -234,18 +232,15 @@ function addLeft(uname)
     chatBox.scrollTo(0, chatBox.scrollHeight+100);
 }
 
-function createIsTyping(username)
+function createIsTyping(user)
 {
     const isTypingDiv = document.createElement('div');
+    isTypingDiv.id = user.id;
     isTypingDiv.classList.add('join-msg');
-
-
-    isTypingDiv.textContent = `${username} is typing...`;
-
+    isTypingDiv.textContent = `${user.username} is typing...`;
 
     return isTypingDiv;
 }
-
 
 function openImage(dataUrl)
 {

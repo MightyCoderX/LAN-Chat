@@ -1,5 +1,7 @@
 const http = require('http');
 const express = require('express');
+const uuid = require('uuid');
+
 const app = express();
 const server = http.createServer(app);
 
@@ -24,30 +26,32 @@ io.on('connection', socket =>
 {
     socket.on('join', username =>
     {
-        if(users.includes(username))
+        const user = { username, id: username.replace(/ +/g, '-') };
+
+        if(users.includes(user))
         {
             return socket.emit('username_status', 'in_use');
         }
 
         socket.emit('username_status', 'ok');
 
-        users.push(username);
+        users.push(user);
 
         console.log(`${username} joined the chat!`);
         console.log('Users:', users);
 
-        io.emit('user_joined', username);
+        io.emit('user_joined', user);
     
         socket.on('typing', typing =>
         {
             console.log(`${username} is typing...`);
 
-            io.emit('typing', { username, typing });
+            io.emit('typing', { user, typing });
         });
 
         socket.on('send_message', content =>
         {
-            let msg = { username, content };
+            let msg = { user, content };
             io.emit('message_received', msg);
 
             messages.push(msg);
@@ -55,7 +59,7 @@ io.on('connection', socket =>
 
         socket.on('send_image', content =>
         {
-            let imgMsg = { username, text: content.text, buffer: content.buffer.toString('base64')};
+            let imgMsg = { user, text: content.text, buffer: content.buffer.toString('base64') };
             io.emit('image_received', imgMsg);
 
             messages.push(imgMsg);
@@ -68,8 +72,8 @@ io.on('connection', socket =>
         socket.on('disconnect', socketDisc =>
         {
             console.log(`${username} left the chat!`);
-            io.emit('user_left', username);
-            users = users.filter(e => e !== username);
+            io.emit('user_left', user);
+            users = users.filter(user => user.username !== username);
             console.log(users);
             io.emit('all_users', users);
         });
