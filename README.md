@@ -6,15 +6,17 @@ A simple socket chat made with [socket.io](https://socket.io/)
 - [x] Send images
 - [x] User typing info message
 - [x] Join/Leave messages
+- [x] Message Timestamp
+- [ ] Image preview
 - [ ] Send documents
-- [ ] Private rooms
 - [ ] Highlight links
 - [ ] Ping other users
 - [ ] Notifications
+- [ ] Private rooms
 
 ## TODO
-- [ ] Validate username
-- [ ] Show image preview when selecting an image to send
+- [x] Validate username
 - [ ] Fix filenames and variable names for consistency's sake
-- [ ] Update the UI/UX of the chat view
-- [ ] Make it a working PWA
+- [-] Update the UI/UX of the chat view
+- [-] Make it a working PWA
+- [ ] Use a DataBase

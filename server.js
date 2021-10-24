@@ -1,10 +1,8 @@
 const http = require('http');
 const express = require('express');
-const uuid = require('uuid');
 
 const app = express();
 const server = http.createServer(app);
-
 const io = require('socket.io')(server);
 
 const messages = [];
@@ -51,15 +49,21 @@ io.on('connection', socket =>
 
         socket.on('send_message', content =>
         {
-            let msg = { user, content };
-            io.emit('message_received', msg);
+            let msg = { user, content, timestamp: Date.now() };
 
+            io.emit('message_received', msg);
             messages.push(msg);
         });
 
         socket.on('send_image', content =>
         {
-            let imgMsg = { user, text: content.text, buffer: content.buffer.toString('base64') };
+            let imgMsg = {
+                user, 
+                text: content.text, 
+                timestamp: new Date(), 
+                buffer: content.buffer.toString('base64') 
+            };
+
             io.emit('image_received', imgMsg);
 
             messages.push(imgMsg);

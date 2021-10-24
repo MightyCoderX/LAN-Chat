@@ -4,11 +4,11 @@ if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/sw.js')
     .then(reg =>
     {
-      console.log('Registration successful, scope is:', registration.scope);
+        console.log('Registration successful, scope is:', reg.scope);
     })
     .catch(err =>
     {
-      console.error('Service worker registration failed, error:', error);
+        console.error('Service worker registration failed, error:', err);
     });
 }
 
@@ -55,11 +55,15 @@ const usersList = document.querySelector('.users-list');
 const bigImageContainer = document.querySelector('.big-image-container');
 const bigImage = document.querySelector('.big-image');
 
-txtMsg.addEventListener('keydown', e =>
+txtMsg.addEventListener('input', e =>
 {
-    if(txtMsg.value)
+    if(txtMsg.value.trim())
     {
         socket.emit('typing', true);
+    }
+    else
+    {
+        socket.emit('typing', false);
     }
 });
 
@@ -107,7 +111,7 @@ socket.on('all_messages', messages =>
 {
     for(let msg of messages)
     {
-        addMessage(msg.user, msg.content, msg.buffer);
+        addMessage(msg.user, msg.content, msg.timestamp, msg.buffer);
     }
 });
 
@@ -136,7 +140,7 @@ socket.on('typing', ({ user, typing }) =>
 {
     if(user.username == username) return;
     
-    let typingElem = chatBox.querySelector(`#${user.id}`);
+    let typingElem = chatBox.querySelector(`[data-user="${user.id}"]`);
     console.log({ typingElem, user, typing });
 
     if(!typingElem)
@@ -160,51 +164,67 @@ socket.on('typing', ({ user, typing }) =>
 
 });
 
-socket.on('message_received', ({ user, content }) =>
+socket.on('message_received', ({ user, content, timestamp }) =>
 {
-    addMessage(user, content, null);
+    addMessage(user, content, timestamp, null);
 });
 
 socket.on('image_received', ({ user, text, buffer }) =>
 {   
-    addMessage(user, text, buffer);
+    addMessage(user, text, timestamp, buffer);
 });
 
-function addMessage(user, text, imageBuffer)
+function addMessage(user, text, timestamp, imageBuffer)
 {
+    const messageContainer = document.createElement('div');
+    messageContainer.classList.add('msg-container');
+    messageContainer.style.display = 'flex';
+
     const messageDiv = document.createElement('div');
     messageDiv.classList.add('msg');
 
-    const spanUsername = document.createElement('span');
-    spanUsername.classList.add('username');
-    spanUsername.textContent = user.username + ' > ';
+    const pUsername = document.createElement('p');
+    pUsername.classList.add('username');
+    pUsername.textContent = user.username;
 
-    const spanText = document.createElement('span');
-    spanText.classList.add('text');
-    spanText.textContent = text;
+    const pText = document.createElement('p');
+    pText.classList.add('text');
+    pText.textContent = text;
 
-    messageDiv.appendChild(spanUsername);
-    messageDiv.appendChild(spanText);
+    const smallTimestamp = document.createElement('small');
+    smallTimestamp.classList.add('timestamp');
+    smallTimestamp.textContent = (new Date(timestamp)).toLocaleString();
+
+    messageDiv.appendChild(pUsername);
+    messageDiv.appendChild(pText);
+    messageDiv.appendChild(smallTimestamp);
+
+    messageContainer.appendChild(messageDiv);
 
     if(imageBuffer)
     {
         const image = document.createElement('img');
         image.src = 'data:image/jpeg;base64,' + imageBuffer;
 
+        messageDiv.appendChild(image);
         image.addEventListener('click', e =>
         {
             openImage(image.src);
         });
-        messageDiv.appendChild(image);
     }
 
-    if(username === user.username || !chatBox.querySelector(`#${user.username}`))
+    if(username === user.username)
     {
-        chatBox.appendChild(messageDiv);
+        messageContainer.style.justifyContent = 'flex-end';
+    }
+
+    if(username === user.username || !chatBox.querySelector(`[data-user="${user.id}"]`))
+    {
+        chatBox.appendChild(messageContainer);
     }
     else
     {
-        chatBox.querySelector(`#${user.username}`).replaceWith(messageDiv);
+        chatBox.querySelector(`[data-user="${user.id}"]`).replaceWith(messageContainer);
     }
 
     chatBox.scrollTo(0, chatBox.scrollHeight+100);
@@ -213,15 +233,15 @@ function addMessage(user, text, imageBuffer)
 function addJoined(nick)
 {
     const joinMsgDiv = document.createElement('div');
-    joinMsgDiv.classList.add('join-msg');
+    joinMsgDiv.classList.add('system-msg');
 
     if(nick != username)
     {
-        joinMsgDiv.textContent = `${nick} si è unito/a alla chat!`;
+        joinMsgDiv.textContent = `${nick} joined the chat!`;
     }
     else
     {
-        joinMsgDiv.textContent = `Ti sei unito/a alla chat!`;
+        joinMsgDiv.textContent = `You joined the chat!`;
     }
 
     chatBox.appendChild(joinMsgDiv);
@@ -231,11 +251,11 @@ function addJoined(nick)
 function addLeft(uname)
 {
     const leftMsgDiv = document.createElement('div');
-    leftMsgDiv.classList.add('join-msg');
+    leftMsgDiv.classList.add('system-msg');
 
     if(uname != username)
     {
-        leftMsgDiv.textContent = `${uname} ha abbandonato la chat!`;
+        leftMsgDiv.textContent = `${uname} left the chat!`;
     }
 
     chatBox.appendChild(leftMsgDiv);
@@ -245,8 +265,8 @@ function addLeft(uname)
 function createIsTyping(user)
 {
     const isTypingDiv = document.createElement('div');
-    isTypingDiv.id = user.id;
-    isTypingDiv.classList.add('join-msg');
+    isTypingDiv.setAttribute('data-user', user.id);
+    isTypingDiv.classList.add('system-msg');
     isTypingDiv.textContent = `${user.username} is typing...`;
 
     return isTypingDiv;

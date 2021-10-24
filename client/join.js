@@ -1,21 +1,24 @@
 const form = document.querySelector('form');
 const txtUsername = document.getElementById('txtUsername');
-
 txtUsername.focus();
 
 const username = txtUsername.value.trim();
-
 
 if(localStorage.getItem('username'))
 {
     txtUsername.value = localStorage.getItem('username');
 }
 
+const illegalCharacters = '`"\'\\';
+
 form.addEventListener('submit', e =>
 {
     const username = txtUsername.value.trim();
 
-    if(!username)
+    const isUsernameValid = username?.split('')
+        .every(char => !illegalCharacters.includes(char));
+
+    if(!isUsernameValid)
     {
         e.preventDefault();
         alert('Nome non valido!');
@@ -23,8 +26,5 @@ form.addEventListener('submit', e =>
         return;
     }
 
-    if(!localStorage.getItem('username'))
-    {
-        localStorage.setItem('username', username);
-    }
+    localStorage.setItem('username', username);
 });
