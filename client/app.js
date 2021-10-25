@@ -169,7 +169,7 @@ socket.on('message_received', ({ user, content, timestamp }) =>
     addMessage(user, content, timestamp, null);
 });
 
-socket.on('image_received', ({ user, text, buffer }) =>
+socket.on('image_received', ({ user, text, timestamp, buffer }) =>
 {   
     addMessage(user, text, timestamp, buffer);
 });
@@ -186,32 +186,35 @@ function addMessage(user, text, timestamp, imageBuffer)
     const pUsername = document.createElement('p');
     pUsername.classList.add('username');
     pUsername.textContent = user.username;
+    messageDiv.appendChild(pUsername);
 
-    const pText = document.createElement('p');
-    pText.classList.add('text');
-    pText.textContent = text;
+    if(text)
+    {
+        const pText = document.createElement('p');
+        pText.classList.add('text');
+        pText.textContent = text;
+        messageDiv.appendChild(pText);
+    }
 
     const smallTimestamp = document.createElement('small');
     smallTimestamp.classList.add('timestamp');
     smallTimestamp.textContent = (new Date(timestamp)).toLocaleString();
 
-    messageDiv.appendChild(pUsername);
-    messageDiv.appendChild(pText);
-    messageDiv.appendChild(smallTimestamp);
-
-    messageContainer.appendChild(messageDiv);
-
+    
     if(imageBuffer)
     {
         const image = document.createElement('img');
         image.src = 'data:image/jpeg;base64,' + imageBuffer;
-
+        
         messageDiv.appendChild(image);
         image.addEventListener('click', e =>
         {
             openImage(image.src);
         });
     }
+    
+    messageDiv.appendChild(smallTimestamp);
+    messageContainer.appendChild(messageDiv);
 
     if(username === user.username)
     {
@@ -279,6 +282,7 @@ function openImage(dataUrl)
 
     document.addEventListener('click', e =>
     {
+        console.log(e.target);
         if(e.target != bigImage && e.target != bigImageContainer 
             && bigImageContainer.style.display != 'none' && e.target != document.querySelector('.chat-box .msg img'))
         {

@@ -17,6 +17,6 @@ A simple socket chat made with [socket.io](https://socket.io/)
 ## TODO
 - [x] Validate username
 - [ ] Fix filenames and variable names for consistency's sake
-- [-] Update the UI/UX of the chat view
-- [-] Make it a working PWA
-- [ ] Use a DataBase
+- [x] Update the UI/UX of the chat view
+- [ ] Make it a working PWA
+- [ ] Use a Database

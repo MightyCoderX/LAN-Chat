@@ -78,7 +78,7 @@ io.on('connection', socket =>
             console.log(`${username} left the chat!`);
             io.emit('user_left', user);
             users = users.filter(user => user.username !== username);
-            console.log(users);
+            console.log(users, '\n');
             io.emit('all_users', users);
         });
     });

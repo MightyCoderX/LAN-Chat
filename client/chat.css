@@ -101,10 +101,10 @@ h3
     display: flex;
     flex-direction: column;
     border-radius: 0.5rem;
-    font-size: 1rem;
-    min-width: 200px;
-    width: max-content;
+    min-width: 10em;
+    width: fit-content;
     max-width: 70%;
+    gap: 0.4rem;
 }
 
 .chat-box .system-msg
@@ -122,10 +122,10 @@ h3
 
 .chat-box .msg .username
 {
-    color: white;
-    font-weight: 400;
+    color: #eee;
+    font-weight: 500;
     background: #222;
-    margin-bottom: 0.5rem;
+    font-size: 0.85rem;
 }
 
 .chat-box .msg .text
@@ -134,6 +134,7 @@ h3
     background: #222;
     overflow-wrap: break-word;
     font-weight: 200;
+    font-size: 0.9rem;
 }
 
 .chat-box .msg .timestamp
@@ -147,7 +148,8 @@ h3
 .chat-box .msg img
 {
     display: block;
-    max-width: 10%;
+    max-width: 100%;
+    border-radius: inherit;
 }
 
 .msg-input
@@ -172,7 +174,7 @@ h3
     border: none;
     outline: none;
     padding: 5px 15px;
-    font-size: 16px;
+    font-size: 0.9rem;
     background: #333;
     color: #ddd;
     font-weight: 300;
