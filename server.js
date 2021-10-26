@@ -44,8 +44,6 @@ io.on('connection', socket =>
     
         socket.on('typing', typing =>
         {
-            console.log(`${username} is typing...`);
-
             io.emit('typing', { user, typing });
         });
 

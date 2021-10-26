@@ -165,7 +165,6 @@ socket.on('typing', ({ user, typing }) =>
 
     if(typing)
     {
-        console.log(`${user.username} is typing...`);
         if(chatBox.contains(typingElem)) return;
         chatBox.appendChild(typingElem);
         chatBox.scrollTo(0, chatBox.scrollHeight+100);
