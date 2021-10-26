@@ -28,7 +28,7 @@ io.on('connection', socket =>
     {
         const user = { username, id: username.replace(/ +/g, '-') };
 
-        if(users.includes(user))
+        if(users.map(user => user.username).includes(user.username))
         {
             return socket.emit('username_status', 'in_use');
         }
