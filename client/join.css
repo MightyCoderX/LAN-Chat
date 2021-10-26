@@ -19,6 +19,7 @@ body
 form
 {
     height: 40%;
+    min-width: fit-content;
     width: 30vw;
     display: flex;
     flex-direction: column;
