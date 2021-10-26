@@ -3,20 +3,24 @@ A simple socket chat made with [socket.io](https://socket.io/)
 
 ## Features
 - [x] Send and receive messages in a group chat
-- [x] Send images
+- [x] Embed images
 - [x] User typing info message
 - [x] Join/Leave messages
 - [x] Message Timestamp
 - [ ] Image preview
-- [ ] Send documents
 - [ ] Highlight links
-- [ ] Ping other users
+- [ ] Attach documents
+- [ ] User Mentions
+- [ ] Send voice messages
+- [ ] Embed videos
 - [ ] Notifications
 - [ ] Private rooms
 
 ## TODO
 - [x] Validate username
-- [ ] Fix filenames and variable names for consistency's sake
 - [x] Update the UI/UX of the chat view
+- [x] Use a textarea instead of an input elem for message input
+- [ ] Organize everything using OOP
+- [ ] Fix filenames and variable names for consistency's sake
 - [ ] Make it a working PWA
 - [ ] Use a Database
