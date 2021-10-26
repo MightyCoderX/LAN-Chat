@@ -73,15 +73,3 @@ form #btnSubmit:active
 {
     background: #0077ff;
 }
-
-@media screen and (max-width: 780px)
-{
-    body
-    {
-        height: 90vh;
-    }
-    form
-    {
-        width: 80vw;
-    }
-}
