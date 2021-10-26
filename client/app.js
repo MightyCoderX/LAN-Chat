@@ -57,7 +57,9 @@ const bigImage = document.querySelector('.big-image');
 
 txtMsg.addEventListener('input', e =>
 {
-    if(txtMsg.value.trim())
+    txtMsg.style.height = '40px';
+    txtMsg.style.height = txtMsg.scrollHeight + 'px';
+    if(formattedMessageText())
     {
         socket.emit('typing', true);
     }
@@ -79,32 +81,43 @@ imageInput.addEventListener('change', e =>
 });
 
 btnSend.addEventListener('click', e => sendMessage());
+txtMsg.addEventListener('keydown', e =>
+{
+    if(e.key == 'Enter' && !e.shiftKey)
+    {
+        if(formattedMessageText()) txtMsg.style.height = '40px';
+        e.preventDefault();
+    }
+});
 txtMsg.addEventListener('keyup', e => 
 {
-    if(e.key === 'Enter')
+    if(e.key === 'Enter' && !e.shiftKey)
     {
         sendMessage();
     }
 });
 
+function formattedMessageText()
+{
+    return txtMsg.value.trim();
+}
+
 function sendMessage()
 {
     if(imageInput.files[0])
     {
-        socket.emit('send_image', { text: txtMsg.value, buffer: imageInput.files[0] });
-        console.log(username, txtMsg.value, imageInput.files);
-        imageInput.value = '';
-        txtMsg.value = '';
-        socket.emit('typing', false);
-        return;
+        socket.emit('send_image', { text: formattedMessageText(), buffer: imageInput.files[0] });
     }
-
-    if(!txtMsg.value.trim()) return;
-
-    socket.emit('send_message', txtMsg.value.trim());
-    socket.emit('typing', false);
-    console.log(username, txtMsg.value);
+    else
+    {
+        if(!formattedMessageText()) return;
+        socket.emit('send_message', formattedMessageText());
+    }
+    
+    console.log(username, formattedMessageText(), imageInput.value);
+    imageInput.value = '';
     txtMsg.value = '';
+    socket.emit('typing', false);
 }
 
 socket.on('all_messages', messages =>
@@ -192,7 +205,7 @@ function addMessage(user, text, timestamp, imageBuffer)
     {
         const pText = document.createElement('p');
         pText.classList.add('text');
-        pText.textContent = text;
+        pText.innerText = text;
         messageDiv.appendChild(pText);
     }
 

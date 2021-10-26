@@ -154,30 +154,32 @@ h3
 
 .msg-input
 {
-    height: 70px;
+    height: fit-content;
     width: 100%;
     background: #222;
     display: flex;
     align-items: center;
     justify-content: space-evenly;
     gap: 1rem;
-    padding-inline: 1rem;
+    padding: 1rem;
     z-index: 1;
     box-shadow: #0007 0 0 1rem;
 }
 
-.msg-input input[type="text"]
+.msg-input textarea
 {
     width: 100%;
     height: 40px;
+    max-height: 30vh;
     border-radius: 2rem;
     border: none;
     outline: none;
-    padding: 5px 15px;
+    padding: 0.7em 1em;
     font-size: 0.9rem;
     background: #333;
-    color: #ddd;
+    color: #ebebeb;
     font-weight: 300;
+    resize: none;
 }
 
 .msg-input .file-input
@@ -227,11 +229,17 @@ h3
 
 .msg-input .btn-send
 {
-    width: 35px;
-    height: 35px;
-    background: #00aadd;
-    clip-path: polygon(0% 0%, 100% 50%, 0% 100%, 20% 50%);
     cursor: pointer;
+}
+
+.msg-input .btn-send span
+{
+    color: #ddd;
+    padding: 0.5rem;
+    padding-left: 0.54rem;
+    padding-right: 0.46rem;
+    border-radius: 100vw;
+    background: #0f0e80;
 }
 
 .big-image-container
