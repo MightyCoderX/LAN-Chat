@@ -38,7 +38,7 @@ socket.on('username_status', status =>
 {
     if(status == 'in_use')
     {
-        window.open('./join.html', '_self');
+        window.open('/', '_self');
     }
     else if(status == 'ok')
     {
