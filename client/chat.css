@@ -263,7 +263,7 @@ h3
     inset: 0;
     z-index: 99999;
     display: none;
-    background: #000a;
+    background: #000b;
 }
 
 .big-image-container .big-image
@@ -304,11 +304,5 @@ h3
     .chat-box .msg img
     {
         max-width: 20%;
-    }
-
-    .big-image-container
-    {
-        top: 50%;
-        height: 90%;
     }
 }
