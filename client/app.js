@@ -230,7 +230,7 @@ function addMessage(user, text, timestamp, imageBuffer)
 
     if(username === user.username)
     {
-        messageContainer.style.justifyContent = 'flex-end';
+        messageContainer.classList.add('self');
     }
 
     if(username === user.username || !chatBox.querySelector(`[data-user="${user.id}"]`))

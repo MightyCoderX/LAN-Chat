@@ -88,11 +88,6 @@ h3
     overflow-y: auto;
 }
 
-.chat-box .msg-container
-{
-    justify-content: start !important;
-}
-
 .chat-box .msg
 {
     background: #222;
@@ -313,9 +308,9 @@ h3
         height: 100vh;
     }
 
-    .chat-box .msg-container
+    .chat-box .msg-container.self
     {
-        justify-content: unset !important;
+        justify-content: flex-end;
     }
 
     .chat-box .msg img
