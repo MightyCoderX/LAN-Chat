@@ -54,6 +54,7 @@ const customInput = imageInput.nextElementSibling;
 const usersList = document.querySelector('.users-list');
 const bigImageContainer = document.querySelector('.big-image-container');
 const bigImage = document.querySelector('.big-image');
+const attachmentPreview = document.querySelector('.attachment-preview');
 
 txtMsg.addEventListener('input', e =>
 {
@@ -78,6 +79,12 @@ customInput.addEventListener('click', e =>
 imageInput.addEventListener('change', e =>
 {
     txtMsg.focus();
+    attachmentPreview.style.padding = '0.5rem';
+    attachmentPreview.innerHTML = '';
+    Array.from(imageInput.files).forEach(file =>
+    {
+        addPreviewItem(file);
+    });
 });
 
 btnSend.addEventListener('click', e => sendMessage());
@@ -106,7 +113,9 @@ function sendMessage()
 {
     if(imageInput.files[0])
     {
-        socket.emit('send_image', { text: formattedMessageText(), buffer: imageInput.files[0] });
+        attachmentPreview.style.padding = '0';
+        attachmentPreview.innerHTML = '';
+        socket.emit('send_file', { text: formattedMessageText(), file: imageInput.files[0] });
     }
     else
     {
@@ -117,6 +126,7 @@ function sendMessage()
     console.log(username, formattedMessageText(), imageInput.value);
     imageInput.value = '';
     txtMsg.value = '';
+    
     socket.emit('typing', false);
 }
 
@@ -181,10 +191,18 @@ socket.on('message_received', ({ user, content, timestamp }) =>
     addMessage(user, content, timestamp, null);
 });
 
-socket.on('image_received', ({ user, text, timestamp, buffer }) =>
+socket.on('file_received', ({ user, text, timestamp, file }) =>
 {   
-    addMessage(user, text, timestamp, buffer);
+    addMessage(user, text, timestamp, file);
 });
+
+function addPreviewItem(file)
+{
+    const previewItem = document.createElement('img');
+    previewItem.classList.add('item');
+    previewItem.src = URL.createObjectURL(file);
+    document.querySelector('.attachment-preview').appendChild(previewItem);
+}
 
 function addMessage(user, text, timestamp, imageBuffer)
 {
@@ -215,7 +233,7 @@ function addMessage(user, text, timestamp, imageBuffer)
     if(imageBuffer)
     {
         const image = document.createElement('img');
-        image.src = 'data:image/jpeg;base64,' + imageBuffer;
+        image.src = 'data:image/webp;base64,' + imageBuffer;
         
         messageDiv.appendChild(image);
         image.addEventListener('click', e =>

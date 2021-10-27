@@ -7,7 +7,7 @@ A simple socket chat made with [socket.io](https://socket.io/)
 - [x] User typing info message
 - [x] Join/Leave messages
 - [x] Message Timestamp
-- [ ] Image preview
+- [x] Image preview
 - [ ] Highlight links
 - [ ] Attach documents
 - [ ] User Mentions
