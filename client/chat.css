@@ -300,9 +300,4 @@ h3
     {
         justify-content: flex-end;
     }
-
-    .chat-box .msg img
-    {
-        max-width: 20%;
-    }
 }
