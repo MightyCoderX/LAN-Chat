@@ -88,6 +88,11 @@ h3
     overflow-y: auto;
 }
 
+.chat-box .msg-container
+{
+    display: flex;
+}
+
 .chat-box .msg
 {
     background: #222;

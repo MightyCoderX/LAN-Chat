@@ -190,7 +190,6 @@ function addMessage(user, text, timestamp, imageBuffer)
 {
     const messageContainer = document.createElement('div');
     messageContainer.classList.add('msg-container');
-    messageContainer.style.display = 'flex';
 
     const messageDiv = document.createElement('div');
     messageDiv.classList.add('msg');
