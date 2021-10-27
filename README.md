@@ -20,7 +20,7 @@ A simple socket chat made with [socket.io](https://socket.io/)
 - [x] Validate username
 - [x] Update the UI/UX of the chat view
 - [x] Use a textarea instead of an input elem for message input
-- [ ] Update the UI/UX of the join view
+- [x] Update the UI/UX of the join view
 - [ ] Organize everything using OOP
 - [ ] Fix filenames and variable names for consistency's sake
 - [ ] Make it a working PWA
