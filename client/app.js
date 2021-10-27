@@ -313,7 +313,10 @@ function openImage(dataUrl)
 
     bigImageContainer.addEventListener('click', e =>
     {
-        bigImageContainer.style.display = 'none';
+        if(e.target == bigImageContainer)
+        {
+            bigImageContainer.style.display = 'none';
+        }
     });
 
     document.addEventListener('keyup', e =>
