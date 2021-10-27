@@ -315,7 +315,7 @@ h3
 
     .chat-box .msg
     {
-        float: unset;
+        float: unset !important;
     }
 
     .chat-box .msg img
