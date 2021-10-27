@@ -313,9 +313,9 @@ h3
         height: 100vh;
     }
 
-    .chat-box .msg
+    .chat-box .msg-container
     {
-        float: unset !important;
+        justify-content: unset !important;
     }
 
     .chat-box .msg img
