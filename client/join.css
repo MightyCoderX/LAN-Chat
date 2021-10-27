@@ -3,7 +3,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: monospace, sans-serif;
+    font-family: 'Roboto', sans-serif;
 }
 
 body
@@ -13,7 +13,7 @@ body
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #181818;
+    background: #111;
 }
 
 form
@@ -24,8 +24,8 @@ form
     flex-direction: column;
     align-items: center;
     justify-content: space-around;
-    background: #3d3d3d;
-    padding: 10px 20px;
+    /* background: #222; */
+    padding: 1rem 3rem;
     box-shadow: black 0 0 30px;
     border-radius: 0.3em;
 }
@@ -34,41 +34,42 @@ form #lblUsername
 {
     font-size: max(5vmin, 2rem);
     color: #dddddd;
+    font-weight: 500;
 }
 
 form #txtUsername
 {
-    width: 80%;
-    height: 40px;
-    padding: 5px 15px;
-    font-size: 16px;
+    width: 100%;
+    padding: 0.8rem 1rem;
+    font-size: 1rem;
     font-weight: 400;
     outline: none;
-    border-radius: 0.3rem;
-    border: 1px solid #006eff;
-    background: #b2d6ff;
-    box-shadow: #1b1b1b 0 0 15px;
-    text-align: center;
+    border-radius: 0.5rem;
+    border: none;
+    background: #222;
+    box-shadow: #080808 0 0.2rem 1rem;
+    color: #ddd;
+    transition: background-color 0.2s;
+}
+
+form #txtUsername:focus
+{
+    background-color: #0026ff1e;
 }
 
 form #btnSubmit
 {
-    padding: 10px 20px;
+    padding: 0.5rem 1.5rem;
     outline: none;
-    border-radius: 0.3rem;
-    background: #0077ff;
-    border: none;
+    border-radius: 100vw;
+    background: transparent;
+    border: 2px solid #0026ff5e;
     box-shadow: #1b1b1b 0 0 15px;
     color: #dddddd;
-    font-size: 18px;
+    font-size: 1rem;
 }
 
 form #btnSubmit:hover
 {
-    background: #002fff;
-}
-
-form #btnSubmit:active
-{
-    background: #0077ff;
+    background: #0026ff9f;
 }
