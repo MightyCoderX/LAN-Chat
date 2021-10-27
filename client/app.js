@@ -115,7 +115,7 @@ function sendMessage()
     {
         attachmentPreview.style.padding = '0';
         attachmentPreview.innerHTML = '';
-        socket.emit('send_file', { text: formattedMessageText(), file: imageInput.files[0] });
+        socket.emit('send_file', { content: formattedMessageText(), file: imageInput.files[0] });
     }
     else
     {
@@ -134,7 +134,7 @@ socket.on('all_messages', messages =>
 {
     for(let msg of messages)
     {
-        addMessage(msg.user, msg.content, msg.timestamp, msg.buffer);
+        addMessage(msg.user, msg.content, msg.timestamp, msg.file);
     }
 });
 
@@ -191,9 +191,9 @@ socket.on('message_received', ({ user, content, timestamp }) =>
     addMessage(user, content, timestamp, null);
 });
 
-socket.on('file_received', ({ user, text, timestamp, file }) =>
+socket.on('file_received', ({ user, content, timestamp, file }) =>
 {   
-    addMessage(user, text, timestamp, file);
+    addMessage(user, content, timestamp, file);
 });
 
 function addPreviewItem(file)
@@ -221,6 +221,8 @@ function addMessage(user, text, timestamp, imageBuffer)
     {
         const pText = document.createElement('p');
         pText.classList.add('text');
+        //TODO: fix xss vulnerability
+        // pText.innerHTML = text.replace(/(https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*))/g, '<a href="$1">$1</a>');
         pText.innerText = text;
         messageDiv.appendChild(pText);
     }
@@ -309,15 +311,9 @@ function openImage(dataUrl)
     bigImage.src = dataUrl;
     bigImageContainer.style.display = 'block';
 
-    document.addEventListener('click', e =>
+    bigImageContainer.addEventListener('click', e =>
     {
-        console.log(e.target);
-        if(e.target != bigImage && e.target != bigImageContainer 
-            && bigImageContainer.style.display != 'none' && e.target != document.querySelector('.chat-box .msg img'))
-        {
-            bigImageContainer.style.display = 'none';
-            console.log('Closed window');
-        }
+        bigImageContainer.style.display = 'none';
     });
 
     document.addEventListener('keyup', e =>
@@ -325,7 +321,6 @@ function openImage(dataUrl)
         if(e.key == 'Escape' && bigImageContainer.style.display != 'none')
         {
             bigImageContainer.style.display = 'none';
-            console.log(e.key);
         } 
     });
 }

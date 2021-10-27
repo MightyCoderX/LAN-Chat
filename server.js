@@ -55,11 +55,11 @@ io.on('connection', socket =>
             messages.push(msg);
         });
 
-        socket.on('send_file', ({ text, file }) =>
+        socket.on('send_file', ({ content, file }) =>
         {
             let imgMsg = {
                 user, 
-                text: text, 
+                content, 
                 timestamp: new Date(), 
                 file: file.toString('base64')
             };
