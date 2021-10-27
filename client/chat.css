@@ -313,6 +313,11 @@ h3
         height: 100vh;
     }
 
+    .chat-box .msg
+    {
+        float: unset;
+    }
+
     .chat-box .msg img
     {
         max-width: 20%;
