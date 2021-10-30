@@ -197,7 +197,7 @@ h3
     gap: 1rem;
     padding: 1rem;
     z-index: 1;
-    box-shadow: #0007 0 0 1rem;
+    box-shadow: hsla(220, 27%, 2%, 0.4) 0 0 1rem;
 }
 
 .msg-input textarea
