@@ -1,6 +1,7 @@
 const socket = io(location.origin);
 
-if ('serviceWorker' in navigator) {
+if ('serviceWorker' in navigator)
+{
     navigator.serviceWorker.register('/sw.js')
     .then(reg =>
     {
@@ -12,39 +13,10 @@ if ('serviceWorker' in navigator) {
     });
 }
 
-function joinChat()
-{
-    let urlParams = (new URL(location)).searchParams;
-    let username = urlParams.get('username');
+let urlParams = (new URL(location)).searchParams;
+let username = urlParams.get('username');
+document.title += ` - ${username}`;
 
-    // if(!storage.getItem('username') || storage.getItem('username') == 'null')
-    // {
-    //     username = prompt('Ciao, scegli un nome: ');
-    //     storage.setItem('username', username);
-    // }
-    // else
-    // {
-    //     username = storage.getItem('username');
-    // }
-    
-    socket.emit('join', username);
-
-    return username;
-}
-
-let username = joinChat();
-
-socket.on('username_status', status =>
-{
-    if(status == 'in_use')
-    {
-        window.open('/', '_self');
-    }
-    else if(status == 'ok')
-    {
-        document.title += ` - ${username}`;
-    }
-});
 
 const chatBox = document.querySelector('.chat > .chat-box');
 const txtMsg = document.getElementById('txtMsg');

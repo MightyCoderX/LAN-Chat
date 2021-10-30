@@ -15,28 +15,62 @@ server.listen(PORT, () =>
     console.log(`Listening at http://localhost:${PORT}/...`);
 });
 
-app.use(express.static('./client/'));
+app.use(express.static('./client/', { index: '_' }));
+app.use(express.json());
 
 app.get('/', (req, res) =>
 {
-    res.sendFile('join.html', {root: './client/'});
+    res.sendFile('join.html', { root: './client/' });
+});
+
+app.post('/join', (req, res) =>
+{
+    const username = req.body.username;
+    
+    const illegalCharacters = '`"\'\\';
+    const isUsernameValid = username?.split('')
+        .every(char => !illegalCharacters.includes(char));
+
+    if(!isUsernameValid)
+    {
+        return res.send({
+            status: 'error',
+            message: 'Username contains illegal characters',
+            error: 'illegal'
+        });
+    }
+
+    const user = { username, id: username.replace(/ +/g, '-') };
+    
+    if(users.map(user => user.username).includes(user.username))
+    {
+        return res.send({
+            status: 'error',
+            message: 'Username is already taken',
+            error: 'taken'
+        });
+    }
+    else
+    {
+        users.push(user);
+        return res.send({
+            status: 'ok',
+            message: 'Username available'
+        });
+    }
+});
+
+app.get('/chat', (req, res) =>
+{
+    res.sendFile('index.html', { root: './client/' });
 });
 
 io.on('connection', socket =>
 {
     socket.on('join', username =>
     {
-        const user = { username, id: username.replace(/ +/g, '-') };
-
-        if(users.map(user => user.username).includes(user.username))
-        {
-            return socket.emit('username_status', 'in_use');
-        }
-
-        socket.emit('username_status', 'ok');
-
-        users.push(user);
-
+        
+        const user = users.find(user => user.username == username);
         console.log(`${username} joined the chat!`);
         console.log('Users:', users);
 

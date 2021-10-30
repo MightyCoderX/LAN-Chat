@@ -10,15 +10,15 @@
 
 html, body
 {
-    width: 100vw;
+    width: 100%;
     height: 100vh;
-    background: #181818;
+    min-height: 100vh;
+    background-color: hsl(219, 30%, 8%);
 }
 
 body
 {
     display: flex;
-    justify-content: stretch;
 }
 
 h3
@@ -31,13 +31,13 @@ h3
     flex-basis: 15%;
     min-width: 200px;
     height: 100%;
-    background: #222;
+    background-color: hsl(219, 30%, 10%);
     z-index: 2;
 }
 
 .info-header
 {
-    background: #2b2b2b;
+    background-color: hsl(219, 30%, 6%);
     height: 60px;
     text-align: center;
     padding: 0 1rem;
@@ -72,18 +72,16 @@ h3
 
 .chat
 {
-    width: 100vw;
-    height: 100%;
+    width: 100%;
+    height: 100vh;
     display: flex;
     flex-direction: column;
-    overflow-x: hidden;
 }
 
 .chat-box
 {
     height: 100%;
     width: 100%;
-    background: #181818;
     padding: 1rem;
     overflow-y: auto;
 }
@@ -171,7 +169,7 @@ h3
 {
     height: fit-content;
     width: 100%;
-    background: #222;
+    background-color: hsl(219, 30%, 6%);
     display: flex;
     align-items: center;
     justify-content: space-evenly;
@@ -216,7 +214,6 @@ h3
     height: 25px;
     border: 1px solid #4797ff;
     cursor: pointer;
-    background: url("./image-icon.svg");
     background-position: 0 0;
 }
 
@@ -245,6 +242,7 @@ h3
 .msg-input .btn-send
 {
     cursor: pointer;
+    display: none;
 }
 
 .msg-input .btn-send span
@@ -291,13 +289,13 @@ h3
         width: 100%;
     }
 
-    .chat
-    {
-        height: 100vh;
-    }
-
     .chat-box .msg-container.self
     {
         justify-content: flex-end;
+    }
+    
+    .msg-input .btn-send
+    {
+        display: block;
     }
 }

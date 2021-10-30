@@ -9,14 +9,22 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
         <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet">
-        <link rel="stylesheet" href="join.css">
+        <link rel="stylesheet" href="css/join.css">
         
-        <script defer src="./join.js"></script>
+        <script defer src="js/join.js"></script>
     </head>
     <body>
-        <form action="./chat.html">
-            <label for="txtUsername" id="lblUsername">Choose a Username</label>
-            <input type="text" name="username" id="txtUsername" placeholder="Insert a username..." required>
+        <form action="/join" method="POST">
+            <label for="txtUsername">Choose a Username</label>
+            <input 
+                type="text" 
+                name="username" 
+                id="txtUsername" 
+                placeholder="Insert a username..." 
+                autocomplete="nickname"
+                required
+            >
+            <p class="error"></p>
             <button type="submit" id="btnSubmit">Join</button>
         </form>
     </body>
