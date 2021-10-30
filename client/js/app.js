@@ -15,8 +15,8 @@ if ('serviceWorker' in navigator)
 
 let urlParams = (new URL(location)).searchParams;
 let username = urlParams.get('username');
+socket.emit('join', username);
 document.title += ` - ${username}`;
-
 
 const chatBox = document.querySelector('.chat > .chat-box');
 const txtMsg = document.getElementById('txtMsg');
@@ -176,7 +176,16 @@ function addPreviewItem(file)
     document.querySelector('.attachment-preview').appendChild(previewItem);
 }
 
-function addMessage(user, text, timestamp, imageBuffer)
+function HtmlEncode(text)
+{
+    console.log(text);
+    return text
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+}
+
+function addMessage(user, content, timestamp, imageBuffer)
 {
     const messageContainer = document.createElement('div');
     messageContainer.classList.add('msg-container');
@@ -189,14 +198,13 @@ function addMessage(user, text, timestamp, imageBuffer)
     pUsername.textContent = user.username;
     messageDiv.appendChild(pUsername);
 
-    if(text)
+    if(content)
     {
-        const pText = document.createElement('p');
-        pText.classList.add('text');
-        //TODO: fix xss vulnerability
-        // pText.innerHTML = text.replace(/(https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*))/g, '<a href="$1">$1</a>');
-        pText.innerText = text;
-        messageDiv.appendChild(pText);
+        const pContent = document.createElement('p');
+        pContent.classList.add('content');
+        pContent.innerHTML = marked(HtmlEncode(content));
+        console.log(HtmlEncode(content), pContent.innerHTML);
+        messageDiv.appendChild(pContent);
     }
 
     const smallTimestamp = document.createElement('small');

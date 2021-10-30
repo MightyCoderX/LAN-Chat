@@ -8,7 +8,7 @@ A simple socket chat made with [socket.io](https://socket.io/)
 - [x] Join/Leave messages
 - [x] Message Timestamp
 - [x] Image preview
-- [ ] Highlight links
+- [x] Highlight links
 - [ ] Attach documents
 - [ ] User Mentions
 - [ ] Send voice messages
@@ -21,6 +21,7 @@ A simple socket chat made with [socket.io](https://socket.io/)
 - [x] Update the UI/UX of the chat view
 - [x] Use a textarea instead of an input elem for message input
 - [x] Update the UI/UX of the join view
+- [x] Add markdown to html conversion and xss fix to front-end
 - [ ] Organize everything using OOP
 - [ ] Fix filenames and variable names for consistency's sake
 - [ ] Make it a working PWA

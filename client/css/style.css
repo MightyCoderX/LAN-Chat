@@ -126,13 +126,34 @@ h3
     font-size: 0.85rem;
 }
 
-.chat-box .msg .text
+.chat-box .msg .content
 {
     color: #ccc;
     background: #222;
     overflow-wrap: break-word;
     font-weight: 200;
     font-size: 0.9rem;
+}
+
+.chat-box .msg .content *
+{
+    padding: revert;
+    margin: revert;
+}
+
+.chat-box .msg .content :first-child
+{
+    margin-top: 0;
+}
+
+.chat-box .msg .content :last-child
+{
+    margin-bottom: 0;
+}
+
+.chat-box .msg .content strong
+{
+    font-weight: 500;
 }
 
 .chat-box .msg .timestamp

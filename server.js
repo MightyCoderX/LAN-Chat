@@ -62,6 +62,7 @@ app.post('/join', (req, res) =>
 
 app.get('/chat', (req, res) =>
 {
+    if(!users.map(user => user.username).includes(req.query.username)) return res.redirect('/');
     res.sendFile('index.html', { root: './client/' });
 });
 
@@ -69,8 +70,8 @@ io.on('connection', socket =>
 {
     socket.on('join', username =>
     {
-        
         const user = users.find(user => user.username == username);
+        if(!user) return;
         console.log(`${username} joined the chat!`);
         console.log('Users:', users);
 
@@ -83,7 +84,7 @@ io.on('connection', socket =>
 
         socket.on('send_message', content =>
         {
-            let msg = { user, content, timestamp: Date.now() };
+            let msg = { user, content: content, timestamp: Date.now() };
 
             io.emit('message_received', msg);
             messages.push(msg);
