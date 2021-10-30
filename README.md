@@ -21,7 +21,8 @@ A simple socket chat made with [socket.io](https://socket.io/)
 - [x] Update the UI/UX of the chat view
 - [x] Use a textarea instead of an input elem for message input
 - [x] Update the UI/UX of the join view
-- [x] Add markdown to html conversion and xss fix to front-end
+- [x] Add markdown to html conversion fix xss to front-end
+- [ ] Limit markdown elements in messages
 - [ ] Organize everything using OOP
 - [ ] Fix filenames and variable names for consistency's sake
 - [ ] Make it a working PWA
