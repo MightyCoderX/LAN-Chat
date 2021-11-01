@@ -1,5 +1,3 @@
-const socket = io(location.origin);
-
 if ('serviceWorker' in navigator)
 {
     navigator.serviceWorker.register('/sw.js')
@@ -13,11 +11,6 @@ if ('serviceWorker' in navigator)
     });
 }
 
-let urlParams = (new URL(location)).searchParams;
-let username = urlParams.get('username');
-socket.emit('join', username);
-document.title += ` - ${username}`;
-
 const chatBox = document.querySelector('.chat > .chat-box');
 const txtMsg = document.getElementById('txtMsg');
 const btnSend = document.querySelector('.btn-send');
@@ -27,53 +20,127 @@ const usersList = document.querySelector('.users-list');
 const bigImageContainer = document.querySelector('.big-image-container');
 const bigImage = document.querySelector('.big-image');
 const attachmentPreview = document.querySelector('.attachment-preview');
-
-txtMsg.addEventListener('input', e =>
-{
-    txtMsg.style.height = '40px';
-    txtMsg.style.height = txtMsg.scrollHeight + 'px';
-    if(formattedMessageText())
-    {
-        socket.emit('typing', true);
-    }
-    else
-    {
-        socket.emit('typing', false);
-    }
-});
-
 txtMsg.focus();
-customInput.addEventListener('click', e =>
-{
-    imageInput.click();
-});
 
-imageInput.addEventListener('change', e =>
+const socket = io(location.origin);
+
+let username;
+
+socket.on('connect', () =>
 {
-    txtMsg.focus();
-    attachmentPreview.style.padding = '0.5rem';
-    attachmentPreview.innerHTML = '';
-    Array.from(imageInput.files).forEach(file =>
+    let urlParams = (new URL(location)).searchParams;
+    username = urlParams.get('username');
+    socket.emit('join', username);
+    document.title += ` - ${username}`;
+
+    txtMsg.addEventListener('input', e =>
     {
-        addPreviewItem(file);
+        txtMsg.style.height = '40px';
+        txtMsg.style.height = txtMsg.scrollHeight + 'px';
+        if(formattedMessageText())
+        {
+            socket.emit('typing', true);
+        }
+        else
+        {
+            socket.emit('typing', false);
+        }
     });
-});
 
-btnSend.addEventListener('click', e => sendMessage());
-txtMsg.addEventListener('keydown', e =>
-{
-    if(e.key == 'Enter' && !e.shiftKey)
+    customInput.addEventListener('click', e =>
     {
-        if(formattedMessageText()) txtMsg.style.height = '40px';
-        e.preventDefault();
-    }
-});
-txtMsg.addEventListener('keyup', e => 
-{
-    if(e.key === 'Enter' && !e.shiftKey)
+        imageInput.click();
+    });
+
+    imageInput.addEventListener('change', e =>
     {
-        sendMessage();
-    }
+        if(imageInput.files.length == 0) return;
+        txtMsg.focus();
+        attachmentPreview.style.padding = '0.5rem';
+        attachmentPreview.innerHTML = '';
+        Array.from(imageInput.files).forEach(file =>
+        {
+            addPreviewItem(file);
+        });
+    });
+
+    btnSend.addEventListener('click', e => sendMessage());
+    txtMsg.addEventListener('keydown', e =>
+    {
+        if(e.key == 'Enter' && !e.shiftKey)
+        {
+            if(formattedMessageText()) txtMsg.style.height = '40px';
+            e.preventDefault();
+        }
+    });
+    txtMsg.addEventListener('keyup', e => 
+    {
+        if(e.key === 'Enter' && !e.shiftKey)
+        {
+            sendMessage();
+        }
+    });
+    socket.on('all_messages', messages =>
+    {
+        for(let msg of messages)
+        {
+            addMessage(msg.user, msg.content, msg.timestamp, msg.file);
+        }
+    });
+
+    socket.on('all_users', users =>
+    {
+        usersList.textContent = '';
+        users.map(user =>
+        {
+            const li = document.createElement('li');
+            li.textContent = user.username;
+            usersList.appendChild(li);
+        });
+    });
+
+    socket.on('user_joined', user =>
+    {
+        addJoined(user.username);
+    });
+
+    socket.on('user_left', user =>
+    {
+        addLeft(user.username);
+    });
+
+    socket.on('typing', ({ user, typing }) =>
+    {
+        if(user.username == username) return;
+        
+        let typingElem = chatBox.querySelector(`[data-user="${user.id}"]`);
+
+        if(!typingElem)
+        {
+            typingElem = createIsTyping(user);
+        }
+
+        if(typing)
+        {
+            if(chatBox.contains(typingElem)) return;
+            chatBox.appendChild(typingElem);
+            chatBox.scrollTo(0, chatBox.scrollHeight+100);
+        }
+        else if(chatBox.contains(typingElem))
+        {
+            chatBox.removeChild(typingElem);
+        }
+    });
+
+    socket.on('message_received', ({ user, content, timestamp }) =>
+    {
+        addMessage(user, content, timestamp, null);
+    });
+
+    socket.on('file_received', ({ user, content, timestamp, file }) =>
+    {   
+        addMessage(user, content, timestamp, file);
+    });
 });
 
 function formattedMessageText()
@@ -94,79 +161,12 @@ function sendMessage()
         if(!formattedMessageText()) return;
         socket.emit('send_message', formattedMessageText());
     }
-    
-    console.log(username, formattedMessageText(), imageInput.value);
+
     imageInput.value = '';
     txtMsg.value = '';
     
     socket.emit('typing', false);
 }
-
-socket.on('all_messages', messages =>
-{
-    for(let msg of messages)
-    {
-        addMessage(msg.user, msg.content, msg.timestamp, msg.file);
-    }
-});
-
-socket.on('all_users', users =>
-{
-    usersList.textContent = '';
-    users.map(user =>
-    {
-        const li = document.createElement('li');
-        li.textContent = user.username;
-        usersList.appendChild(li);
-    });
-});
-
-socket.on('user_joined', user =>
-{
-    addJoined(user.username);
-});
-
-socket.on('user_left', user =>
-{
-    addLeft(user.username);
-});
-
-socket.on('typing', ({ user, typing }) =>
-{
-    if(user.username == username) return;
-    
-    let typingElem = chatBox.querySelector(`[data-user="${user.id}"]`);
-    console.log({ typingElem, user, typing });
-
-    if(!typingElem)
-    {
-        typingElem = createIsTyping(user);
-    }
-
-    console.log(typing, typingElem);
-
-    if(typing)
-    {
-        if(chatBox.contains(typingElem)) return;
-        chatBox.appendChild(typingElem);
-        chatBox.scrollTo(0, chatBox.scrollHeight+100);
-    }
-    else
-    {
-        chatBox.removeChild(typingElem);
-    }
-
-});
-
-socket.on('message_received', ({ user, content, timestamp }) =>
-{
-    addMessage(user, content, timestamp, null);
-});
-
-socket.on('file_received', ({ user, content, timestamp, file }) =>
-{   
-    addMessage(user, content, timestamp, file);
-});
 
 function addPreviewItem(file)
 {
@@ -176,9 +176,8 @@ function addPreviewItem(file)
     document.querySelector('.attachment-preview').appendChild(previewItem);
 }
 
-function HtmlEncode(text)
+function escapeHtml(text)
 {
-    console.log(text);
     return text
         .replace(/&/g, '&amp;')
         .replace(/</g, '&lt;')
@@ -202,8 +201,7 @@ function addMessage(user, content, timestamp, imageBuffer)
     {
         const pContent = document.createElement('p');
         pContent.classList.add('content');
-        pContent.innerHTML = marked(HtmlEncode(content));
-        console.log(HtmlEncode(content), pContent.innerHTML);
+        pContent.innerHTML = marked(escapeHtml(content));
         messageDiv.appendChild(pContent);
     }
 

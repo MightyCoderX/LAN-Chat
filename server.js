@@ -62,6 +62,7 @@ app.post('/join', (req, res) =>
 
 app.get('/chat', (req, res) =>
 {
+    console.log('Someone requested the chat page', req.url);
     if(!users.map(user => user.username).includes(req.query.username)) return res.redirect('/');
     res.sendFile('index.html', { root: './client/' });
 });
@@ -73,7 +74,7 @@ io.on('connection', socket =>
         const user = users.find(user => user.username == username);
         if(!user) return;
         console.log(`${username} joined the chat!`);
-        console.log('Users:', users);
+        console.log('Users:', users, '\n');
 
         io.emit('user_joined', user);
     
@@ -84,7 +85,7 @@ io.on('connection', socket =>
 
         socket.on('send_message', content =>
         {
-            let msg = { user, content: content, timestamp: Date.now() };
+            let msg = { user, content: escapeHtml(content), timestamp: Date.now() };
 
             io.emit('message_received', msg);
             messages.push(msg);
@@ -94,7 +95,7 @@ io.on('connection', socket =>
         {
             let imgMsg = {
                 user, 
-                content, 
+                content: escapeHtml(content), 
                 timestamp: new Date(), 
                 file: file.toString('base64')
             };
@@ -113,8 +114,16 @@ io.on('connection', socket =>
             console.log(`${username} left the chat!`);
             io.emit('user_left', user);
             users = users.filter(user => user.username !== username);
-            console.log(users, '\n');
+            console.log('Users:', users, '\n');
             io.emit('all_users', users);
         });
     });
 });
+
+function escapeHtml(text)
+{
+    return text
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+}
