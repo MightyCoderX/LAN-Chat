@@ -163,7 +163,7 @@ function sendMessageNotification(message)
             vibrate: true,
             requireInteraction: true,
             icon: '/img/icon.svg',
-            badge: 'LAN Chat'
+            badge: '/img/icon.svg'
         }
     );
 }
