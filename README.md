@@ -22,6 +22,7 @@ A simple socket chat made with [socket.io](https://socket.io/)
 - [x] Use a textarea instead of an input elem for message input
 - [x] Update the UI/UX of the join view
 - [x] Add markdown to html conversion fix xss to front-end
+- [ ] Send notifications from webworker
 - [ ] Study how to make a better username only "login" method
 - [ ] Limit markdown elements in messages
 - [ ] Organize everything using OOP
