@@ -200,7 +200,6 @@ h3
     gap: 1rem;
     padding: 1rem;
     z-index: 1;
-    /* TODO: fix shadow color */
     box-shadow: hsla(241, 100%, 29%, 0.25) 0 0 1rem;
 }
 

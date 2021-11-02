@@ -9,11 +9,11 @@ A simple socket chat made with [socket.io](https://socket.io/)
 - [x] Message Timestamp
 - [x] Image preview
 - [x] Highlight links
+- [x] Notifications
 - [ ] Attach documents
 - [ ] User Mentions
 - [ ] Send voice messages
 - [ ] Embed videos
-- [ ] Notifications
 - [ ] Private rooms
 
 ## TODO

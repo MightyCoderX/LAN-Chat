@@ -11,6 +11,11 @@ if ('serviceWorker' in navigator)
     });
 }
 
+if(Notification.permission !== 'denied')
+{
+    Notification.requestPermission();
+}
+
 const chatBox = document.querySelector('.chat > .chat-box');
 const txtMsg = document.getElementById('txtMsg');
 const btnSend = document.querySelector('.btn-send');
@@ -134,14 +139,34 @@ socket.on('connect', () =>
 
     socket.on('message_received', ({ user, content, timestamp }) =>
     {
+        sendMessageNotification({ user, content, timestamp });
         addMessage(user, content, timestamp, null);
     });
 
     socket.on('file_received', ({ user, content, timestamp, file }) =>
-    {   
+    {
+        sendMessageNotification({ user, content, timestamp, file });
         addMessage(user, content, timestamp, file);
     });
 });
+
+function sendMessageNotification(message)
+{
+    if(Notification.permission === 'denied' || message.user.username === username) return;
+
+    if(Notification.permission === 'default') Notification.requestPermission();
+
+    return new Notification(
+        message.user.username, 
+        { 
+            body: message.content,
+            vibrate: true,
+            requireInteraction: true,
+            icon: '/img/icon.svg',
+            badge: 'LAN Chat'
+        }
+    );
+}
 
 function formattedMessageText()
 {
