@@ -74,8 +74,13 @@ h3
 {
     width: 100%;
     height: 100vh;
-    display: flex;
+    display: none;
     flex-direction: column;
+}
+
+.chat.shown
+{
+    display: flex;
 }
 
 .chat-box
@@ -299,17 +304,57 @@ h3
 {
     body
     {
-        flex-direction: column-reverse;
-        min-height: 200%;
-        justify-content: start;
+        flex-direction: column;
+    }
+
+    .chat-box
+    {
+        height: auto;
     }
 
     .chat-info
     {
         max-width: initial;
         width: 100%;
+        height: max-content;
     }
 
+    .info-header
+    {
+        display: none;
+    }
+
+    .info-container
+    {
+        background-color: hsl(219, 30%, 6%);
+    }
+
+    .info-container .users-title
+    {
+        font-size: 1rem;
+    }
+
+    .info-container .users-list
+    {
+        margin: 0;
+    }
+
+    .info-container .users-list li
+    {
+        display: inline;
+    }
+    
+    .info-container .users-list li + li::before
+    {
+        content: ', ';
+    }
+
+    .chat
+    {
+        height: 100%;
+    }
+
+    /* TODO: Fix size changing after message overflows */
     .chat-box .msg-container.self
     {
         justify-content: flex-end;

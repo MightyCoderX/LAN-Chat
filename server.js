@@ -20,7 +20,7 @@ app.use(express.json());
 
 app.get('/', (req, res) =>
 {
-    res.sendFile('join.html', { root: './client/' });
+    res.sendFile('index.html', { root: './client/' });
 });
 
 app.post('/join', (req, res) =>
@@ -58,13 +58,6 @@ app.post('/join', (req, res) =>
             message: 'Username available'
         });
     }
-});
-
-app.get('/chat', (req, res) =>
-{
-    console.log('Someone requested the chat page', req.url);
-    if(!users.map(user => user.username).includes(req.query.username)) return res.redirect('/');
-    res.sendFile('index.html', { root: './client/' });
 });
 
 io.on('connection', socket =>

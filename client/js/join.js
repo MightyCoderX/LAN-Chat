@@ -1,9 +1,11 @@
-const form = document.querySelector('form');
+const form = document.querySelector('form.join-form');
 const txtUsername = document.getElementById('txtUsername');
 const pError = document.querySelector('p.error');
 txtUsername.focus();
 
-const username = txtUsername.value.trim();
+console.log('join.js');
+
+let username;
 
 if(localStorage.getItem('username'))
 {
@@ -17,12 +19,12 @@ form.addEventListener('submit', e =>
     e.preventDefault();
 
     const formData = new FormData(form);
-    const username = formData.get('username');
+    const formUsername = formData.get('username');
 
     fetch(e.target.action,
     {
         method: e.target.method,
-        body: JSON.stringify({ username }),
+        body: JSON.stringify({ username: formUsername }),
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
@@ -31,10 +33,13 @@ form.addEventListener('submit', e =>
     .then(async res =>
     {
         const json = await res.json();
-        if(json.status == 'ok')
+        if(json.status === 'ok')
         {
-            localStorage.setItem('username', username);
-            window.open(`/chat?username=${username}`, '_self');
+            localStorage.setItem('username', formUsername);
+            username = formUsername;
+            connect();
+            document.querySelector('.join-form-container').classList.add('hidden');
+            document.querySelector('.chat').classList.add('shown');
         }
         else
         {
