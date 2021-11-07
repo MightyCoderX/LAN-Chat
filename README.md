@@ -23,7 +23,7 @@ A simple socket chat made with [socket.io](https://socket.io/)
 - [x] Update the UI/UX of the join view
 - [x] Add markdown to html conversion fix xss to front-end
 - [ ] Send notifications from webworker
-- [ ] Study how to make a better username only "login" method
+- [ ] Revert back to sockets for user login
 - [ ] Limit markdown elements in messages
 - [ ] Organize everything using OOP
 - [ ] Fix filenames and variable names for consistency's sake

@@ -69,6 +69,7 @@ io.on('connection', socket =>
         console.log(`${username} joined the chat!`);
         console.log('Users:', users, '\n');
 
+        socket.emit('all_messages', messages);
         io.emit('user_joined', user);
     
         socket.on('typing', typing =>
@@ -97,8 +98,6 @@ io.on('connection', socket =>
 
             messages.push(imgMsg);
         });
-
-        socket.emit('all_messages', messages);
 
         io.emit('all_users', users);
 

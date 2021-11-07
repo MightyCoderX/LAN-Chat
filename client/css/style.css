@@ -18,7 +18,13 @@ html, body
 
 body
 {
-    display: flex;
+    display: grid;
+    grid-template-columns: max-content 2fr;
+    grid-template-rows: 1fr max-content;
+    grid-template-areas: 
+        "chat-info chat-box"
+        "chat-info attachment-preview"
+        "chat-info msg-input";
 }
 
 h3
@@ -28,6 +34,7 @@ h3
 
 .chat-info
 {
+    grid-area: chat-info;
     flex-basis: 15%;
     min-width: 200px;
     height: 100%;
@@ -70,25 +77,19 @@ h3
     text-overflow: ellipsis;
 }
 
-.chat
-{
-    width: 100%;
-    height: 100vh;
-    display: none;
-    flex-direction: column;
-}
-
-.chat.shown
-{
-    display: flex;
-}
-
 .chat-box
 {
+    display: none;
+    grid-area: chat-box;
     height: 100%;
     width: 100%;
     padding: 1rem;
     overflow-y: auto;
+}
+
+.chat-box.shown
+{
+    display: block;
 }
 
 .chat-box .msg-container
@@ -181,8 +182,9 @@ h3
 
 .attachment-preview
 {
+    grid-area: attachment-preview;
     width: 100%;
-    max-height: 15%;
+    max-height: 5rem;
     background-color: hsl(219, 30%, 12%);
     z-index: 2;
     display: flex;
@@ -196,6 +198,7 @@ h3
 
 .msg-input
 {
+    grid-area: msg-input;
     height: fit-content;
     width: 100%;
     background-color: hsl(219, 30%, 6%);
@@ -304,12 +307,13 @@ h3
 {
     body
     {
-        flex-direction: column;
-    }
-
-    .chat-box
-    {
-        height: auto;
+        grid-template-columns: 100%;
+        grid-template-rows: max-content 1fr max-content max-content;
+        grid-template-areas: 
+            "chat-info"
+            "chat-box"
+            "attachment-preview"
+            "msg-input";
     }
 
     .chat-info
@@ -341,17 +345,13 @@ h3
 
     .info-container .users-list li
     {
-        display: inline;
+        display: inline-block;
+        vertical-align: top;
     }
     
     .info-container .users-list li + li::before
     {
         content: ', ';
-    }
-
-    .chat
-    {
-        height: 100%;
     }
 
     /* TODO: Fix size changing after message overflows */

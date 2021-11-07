@@ -1,21 +1,20 @@
 .join-form-container
 {
     width: 100%;
-    height: 100vh;
-    justify-self: center;
     display: grid;
-    justify-content: center;
+    place-content: center;
+    grid-area: chat-box;
 }
 
 .join-form-container.hidden
 {
     display: none;
+    grid-area: none;
 }
 
 .join-form
 {
-    margin-top: 20vh;
-    height: 40%;
+    height: 45vmin;
     min-height: 200px;
     width: fit-content;
     display: flex;

@@ -1,4 +1,4 @@
-const chatBox = document.querySelector('.chat > .chat-box');
+const chatBox = document.querySelector('.chat-box');
 const txtMsg = document.getElementById('txtMsg');
 const btnSend = document.querySelector('.btn-send');
 const imageInput = document.querySelector(".file-input");

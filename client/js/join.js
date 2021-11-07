@@ -39,7 +39,7 @@ form.addEventListener('submit', e =>
             username = formUsername;
             connect();
             document.querySelector('.join-form-container').classList.add('hidden');
-            document.querySelector('.chat').classList.add('shown');
+            document.querySelector('.chat-box').classList.add('shown');
         }
         else
         {
