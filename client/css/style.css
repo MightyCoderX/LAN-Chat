@@ -193,14 +193,14 @@ h3
 .msg-input
 {
     grid-area: msg-input;
-    height: fit-content;
+    height: max-content;
     width: 100%;
     background-color: hsl(219, 30%, 6%);
     display: flex;
     align-items: center;
     justify-content: space-evenly;
-    gap: 1rem;
-    padding: 1rem;
+    gap: 0.5rem;
+    padding: 1rem 0.5rem;
     z-index: 1;
     box-shadow: hsla(241, 100%, 29%, 0.25) 0 0 1rem;
 }

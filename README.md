@@ -25,6 +25,7 @@ A simple socket chat made with [socket.io](https://socket.io/)
 - [x] Make it a working PWA
 - [ ] Revert back to sockets for user login
 - [ ] Send notifications from webworker
+- [ ] Use custom scrollbars instead of the ugly default ones
 - [ ] Fix filenames and variable names for consistency's sake
 - [ ] Limit markdown elements in messages
 - [ ] Organize everything using OOP
