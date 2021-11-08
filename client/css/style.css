@@ -235,34 +235,23 @@ h3
 
 .msg-input .custom-file-input
 {
-    position: relative;
-    width: 30px;
-    height: 25px;
-    border: 1px solid #4797ff;
+    width: 2.5rem;
+    aspect-ratio: 1 / 1;
     cursor: pointer;
-    background-position: 0 0;
+    border-radius: 100%;
+    display: grid;
+    place-content: center;
 }
 
-.image-icon
+.msg-input .custom-file-input img
 {
-    position: absolute;
-    fill: white;
-    width: 90% !important;
-    height: 100% !important;
-    transform: translate(-50%, -50%);
-    top: 50%;
-    left: 50%;
+    transform: rotate(45deg);
 }
 
-.msg-input .file-input:focus + .custom-file-input,
+.msg-input .file-input:focus-visible + .custom-file-input,
 .msg-input .file-input + .custom-file-input:hover
 {
-    background: #4797ff;
-}
-
-.msg-input .custom-file-input:active
-{
-    background: #0f77ff;
+    background: hsl(219, 10%, 20%);
 }
 
 .msg-input .btn-send
