@@ -3,8 +3,6 @@ const txtUsername = document.getElementById('txtUsername');
 const pError = document.querySelector('p.error');
 txtUsername.focus();
 
-console.log('join.js');
-
 let username;
 
 if(localStorage.getItem('username'))
@@ -39,7 +37,6 @@ form.addEventListener('submit', e =>
             username = formUsername;
             connect();
             document.querySelector('.join-form-container').classList.add('hidden');
-            document.querySelector('.chat-box').classList.add('shown');
         }
         else
         {

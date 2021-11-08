@@ -7,9 +7,7 @@ const usersList = document.querySelector('.users-list');
 const bigImageContainer = document.querySelector('.big-image-container');
 const bigImage = document.querySelector('.big-image');
 const attachmentPreview = document.querySelector('.attachment-preview');
-txtMsg.focus();
 
-console.log('chat.js', username);
 
 if(Notification.permission !== 'denied')
 {
@@ -20,6 +18,7 @@ let socket;
 
 function connect()
 {
+    txtMsg.focus();
     socket = io(location.origin);
     socket.on('connect', onConnect);
 }

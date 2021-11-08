@@ -79,17 +79,11 @@ h3
 
 .chat-box
 {
-    display: none;
     grid-area: chat-box;
     height: 100%;
     width: 100%;
     padding: 1rem;
     overflow-y: auto;
-}
-
-.chat-box.shown
-{
-    display: block;
 }
 
 .chat-box .msg-container
