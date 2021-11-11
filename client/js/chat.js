@@ -188,7 +188,7 @@ function sendMessageNotification(message)
         
         return notification;
     }
-    catch()
+    catch(_)
     {
     }
     
