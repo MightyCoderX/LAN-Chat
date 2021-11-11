@@ -13,8 +13,8 @@
       "purpose": "any"
     }
   ],
-  "background_color": "#222",
-  "theme_color": "#333",
+  "background_color": "#0e131b",
+  "theme_color": "#020094",
   "start_url": "/",
   "display": "standalone",
   "orientation": "any"

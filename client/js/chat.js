@@ -8,25 +8,50 @@ const bigImageContainer = document.querySelector('.big-image-container');
 const bigImage = document.querySelector('.big-image');
 const attachmentPreview = document.querySelector('.attachment-preview');
 
+let localUser = { username: '', id: '' };
 
 if(Notification.permission !== 'denied')
 {
     Notification.requestPermission();
 }
 
-let socket;
-
-function connect()
+let socket = io(location.origin);
+socket.on('connect', () =>
 {
+    form.addEventListener('submit', e =>
+    {
+        e.preventDefault();
+
+        const formData = new FormData(form);
+        const formUsername = formData.get('username');
+
+        socket.emit('join', formUsername);
+        
+        socket.on('join', user => 
+        {
+            localUser = user;
+
+            localStorage.setItem('username', formUsername);
+
+            document.querySelector('.join-form-container').classList.add('hidden');
+
+            onJoin();
+        });
+
+        socket.on('join_error', errorMessage =>
+        {
+            socket = io(location.origin);
+            pError.innerText = errorMessage;
+            pError.classList.add('shown');
+        });
+    });
+});
+
+function onJoin()
+{
+    
+    document.title += ` - ${localUser.username}`;
     txtMsg.focus();
-    socket = io(location.origin);
-    socket.on('connect', onConnect);
-}
-
-function onConnect()
-{
-    socket.emit('join', username);
-    document.title += ` - ${username}`;
 
     txtMsg.addEventListener('input', e =>
     {
@@ -68,6 +93,7 @@ function onConnect()
             e.preventDefault();
         }
     });
+
     txtMsg.addEventListener('keyup', e => 
     {
         if(e.key === 'Enter' && !e.shiftKey)
@@ -75,6 +101,7 @@ function onConnect()
             sendMessage();
         }
     });
+
     socket.on('all_messages', messages =>
     {
         for(let msg of messages)
@@ -106,7 +133,7 @@ function onConnect()
 
     socket.on('typing', ({ user, typing }) =>
     {
-        if(user.username == username) return;
+        if(user.username == localUser.username) return;
         
         let typingElem = chatBox.querySelector(`[data-user="${user.id}"]`);
 
@@ -142,7 +169,7 @@ function onConnect()
 
 function sendMessageNotification(message)
 {
-    if(Notification.permission === 'denied' || message.user.username === username) return;
+    if(Notification.permission === 'denied' || message.user.username === localUser.username) return;
 
     if(Notification.permission === 'default') Notification.requestPermission();
 
@@ -240,12 +267,12 @@ function addMessage(user, content, timestamp, imageBuffer)
     messageDiv.appendChild(smallTimestamp);
     messageContainer.appendChild(messageDiv);
 
-    if(username === user.username)
+    if(localUser.username === user.username)
     {
         messageContainer.classList.add('self');
     }
 
-    if(username === user.username || !chatBox.querySelector(`[data-user="${user.id}"]`))
+    if(localUser.username === user.username || !chatBox.querySelector(`[data-user="${user.id}"]`))
     {
         chatBox.appendChild(messageContainer);
     }
@@ -262,7 +289,7 @@ function addJoined(nick)
     const joinMsgDiv = document.createElement('div');
     joinMsgDiv.classList.add('system-msg');
 
-    if(nick != username)
+    if(nick != localUser.username)
     {
         joinMsgDiv.textContent = `${nick} joined the chat!`;
     }
@@ -280,7 +307,7 @@ function addLeft(uname)
     const leftMsgDiv = document.createElement('div');
     leftMsgDiv.classList.add('system-msg');
 
-    if(uname != username)
+    if(uname != localUser.username)
     {
         leftMsgDiv.textContent = `${uname} left the chat!`;
     }

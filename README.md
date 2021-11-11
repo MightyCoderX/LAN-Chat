@@ -23,7 +23,7 @@ A simple socket chat made with [socket.io](https://socket.io/)
 - [x] Update the UI/UX of the join view
 - [x] Add markdown to html conversion fix xss to front-end
 - [x] Make it a working PWA
-- [ ] Revert back to sockets for user login
+- [x] Revert back to sockets for user login
 - [ ] Send notifications from webworker
 - [ ] Use custom scrollbars instead of the ugly default ones
 - [ ] Fix filenames and variable names for consistency's sake

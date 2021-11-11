@@ -23,49 +23,21 @@ app.get('/', (req, res) =>
     res.sendFile('index.html', { root: './client/' });
 });
 
-app.post('/join', (req, res) =>
-{
-    const username = req.body.username;
-    
-    const illegalCharacters = '`"\'\\';
-    const isUsernameValid = username?.split('')
-        .every(char => !illegalCharacters.includes(char));
-
-    if(!isUsernameValid)
-    {
-        return res.send({
-            status: 'error',
-            message: 'Username contains illegal characters',
-            error: 'illegal'
-        });
-    }
-
-    const user = { username, id: username.replace(/ +/g, '-') };
-    
-    if(users.map(user => user.username).includes(user.username))
-    {
-        return res.send({
-            status: 'error',
-            message: 'Username is already taken',
-            error: 'taken'
-        });
-    }
-    else
-    {
-        users.push(user);
-        return res.send({
-            status: 'ok',
-            message: 'Username available'
-        });
-    }
-});
 
 io.on('connection', socket =>
 {
     socket.on('join', username =>
     {
-        const user = users.find(user => user.username == username);
-        if(!user) return;
+        if(!validateUsername(username)) 
+            return socket.emit('join_error', 'Username contains illegal characters');
+        
+        if(users.map(user => user.username).includes(username))
+            return socket.emit('join_error', 'Username is already taken');
+        
+        const user = { username, id: username.replace(/ +/g, '-') };
+        users.push(user);
+        socket.emit('join', user);
+
         console.log(`${username} joined the chat!`);
         console.log('Users:', users, '\n');
 
@@ -111,6 +83,13 @@ io.on('connection', socket =>
         });
     });
 });
+
+function validateUsername(username)
+{
+    const illegalCharacters = '`"\'\\';
+
+    return username?.split('').every(char => !illegalCharacters.includes(char));
+}
 
 function escapeHtml(text)
 {
