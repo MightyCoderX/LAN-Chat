@@ -173,16 +173,26 @@ function sendMessageNotification(message)
 
     if(Notification.permission === 'default') Notification.requestPermission();
 
-    return new Notification(
-        message.user.username, 
-        { 
-            body: message.content,
-            vibrate: true,
-            requireInteraction: true,
-            icon: '/img/icon.svg',
-            badge: '/img/icon.svg'
-        }
-    );
+    try
+    {
+        const notification = new Notification(
+            message.user.username, 
+            { 
+                body: message.content,
+                vibrate: true,
+                requireInteraction: true,
+                icon: '/img/icon.svg',
+                badge: '/img/icon.svg'
+            }
+        );
+        
+        return notification;
+    }
+    catch()
+    {
+    }
+    
+    return null;
 }
 
 function formattedMessageText()
