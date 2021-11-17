@@ -79,6 +79,7 @@ function onJoin()
     {
         attachmentPreview.querySelectorAll('.item').forEach(e => e.remove());
         attachmentPreview.classList.remove('shown');
+        imageInput.value = '';
     });
 
     txtMsg.addEventListener('input', e =>
