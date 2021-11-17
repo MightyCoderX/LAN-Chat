@@ -24,6 +24,8 @@ A simple socket chat made with [socket.io](https://socket.io/)
 - [x] Add markdown to html conversion fix xss to front-end
 - [x] Make it a working PWA
 - [x] Revert back to sockets for user login
+- [x] Add button to clear attachments
+- [ ] Use HTML Custom Elements
 - [ ] Send notifications from webworker
 - [ ] Use custom scrollbars instead of the ugly default ones
 - [ ] Fix filenames and variable names for consistency's sake

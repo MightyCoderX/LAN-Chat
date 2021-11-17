@@ -1,4 +1,4 @@
-.join-form-container
+.login-form-container
 {
     position: absolute;
     inset: 0;
@@ -9,16 +9,16 @@
     z-index: 999;
 }
 
-.join-form-container.hidden
+.login-form-container.hidden
 {
     display: none;
 }
 
-.join-form
+.login-form
 {
     height: 45vmin;
     min-height: 200px;
-    width: fit-content;
+    width: auto;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -28,14 +28,14 @@
     border-radius: 0.3em;
 }
 
-.join-form label
+.login-form label
 {
     font-size: max(6vmin, 1.5rem);
     color: #dddddd;
     font-weight: 500;
 }
 
-.join-form input
+.login-form input
 {
     width: 100%;
     padding: 0.8rem 1rem;
@@ -50,12 +50,12 @@
     transition: background-color 0.3s;
 }
 
-.join-form input:focus
+.login-form input:focus
 {
     background-color: hsl(219, 60%, 15%);
 }
 
-.join-form .error
+.login-form .error
 {
     display: block;
     opacity: 0;
@@ -66,13 +66,13 @@
     position: absolute;
 }
 
-.join-form .error.shown
+.login-form .error.shown
 {
     opacity: 1;
     position: initial;
 }
 
-.join-form button
+.login-form button
 {
     padding: 0.5rem 1.5rem;
     outline: none;
@@ -85,7 +85,7 @@
     transition: background-color 0.2s ease;
 }
 
-.join-form button:hover
+.login-form button:hover
 {
     background-color: #0026ff9f;
 }

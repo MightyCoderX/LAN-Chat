@@ -1,0 +1,32 @@
+::-webkit-scrollbar
+{
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track
+{
+    background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb
+{
+    background-color: hsl(219, 50%, 15%);
+    border-radius: 100vh;
+}
+
+::-webkit-scrollbar-thumb:hover
+{
+    background-color: hsl(219, 50%, 20%);
+}
+
+::-webkit-scrollbar-corner
+{
+    background-color: transparent;
+}
+
+*
+{
+    scrollbar-color: hsl(219, 50%, 20%) transparent;
+    scrollbar-width: thin;
+}

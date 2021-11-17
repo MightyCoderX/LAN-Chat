@@ -24,13 +24,15 @@ body
     grid-template-areas: 
         "chat-info chat-box"
         "chat-info attachment-preview"
-        "chat-info msg-input";
+        "chat-info message-input";
 }
 
 h3
 {
     font-weight: 500;
 }
+
+
 
 .chat-info
 {
@@ -85,12 +87,12 @@ h3
     overflow-y: auto;
 }
 
-.chat-box .msg-container
+.chat-box .message-container
 {
     display: flex;
 }
 
-.chat-box .msg
+.chat-box .message
 {
     background: hsl(219, 30%, 12%);
     padding: 0.5rem;
@@ -99,17 +101,17 @@ h3
     flex-direction: column;
     border-radius: 0.5rem;
     min-width: 10em;
-    width: fit-content;
+    width: max-content;
     max-width: 70%;
     gap: 0.4rem;
 }
 
-.chat-box .msg-container.self .msg
+.chat-box .message-container.self .message
 {
     background: hsl(219, 60%, 15%);
 }
 
-.chat-box .system-msg
+.chat-box .system-message
 {   
     background: hsl(219, 40%, 12%);
     padding: 0.5rem 1.2rem;
@@ -118,18 +120,18 @@ h3
     font-size: 0.9rem;
     text-align: center;
     margin: 1rem auto;
-    width: fit-content;
+    width: max-content;
     border-radius: 100vw;
 }
 
-.chat-box .msg .username
+.chat-box .message .username
 {
     color: #fff;
     font-weight: 500;
     font-size: 0.85rem;
 }
 
-.chat-box .msg .content
+.chat-box .message .content
 {
     color: #ccc;
     overflow-wrap: break-word;
@@ -137,28 +139,28 @@ h3
     font-size: 0.9rem;
 }
 
-.chat-box .msg .content *
+.chat-box .message .content *
 {
     padding: revert;
     margin: revert;
 }
 
-.chat-box .msg .content :first-child
+.chat-box .message .content :first-child
 {
     margin-top: 0;
 }
 
-.chat-box .msg .content :last-child
+.chat-box .message .content :last-child
 {
     margin-bottom: 0;
 }
 
-.chat-box .msg .content strong
+.chat-box .message .content strong
 {
     font-weight: 500;
 }
 
-.chat-box .msg .timestamp
+.chat-box .message .timestamp
 {
     display: block;
     color: #777;
@@ -166,10 +168,10 @@ h3
     text-align: right;
 }
 
-.chat-box .msg img
+.chat-box .message img
 {
     display: block;
-    max-width: 100%;
+    max-width: 30vw;
     border-radius: inherit;
 }
 
@@ -182,6 +184,25 @@ h3
     z-index: 2;
     display: flex;
     overflow-x: auto;
+    height: 0;
+}
+
+.attachment-preview.shown
+{
+    padding: 0.5em;
+    height: auto;
+}
+
+.attachment-preview .btn-clear
+{
+    background: none;
+    color: #ddd;
+    border: none;
+    outline: none;
+    padding: 1rem;
+    font-weight: 500;
+    font-size: 1.5rem;
+    margin-right: 0.5rem;
 }
 
 .attachment-preview .item
@@ -189,9 +210,9 @@ h3
     height: 100%;
 }
 
-.msg-input
+.message-input
 {
-    grid-area: msg-input;
+    grid-area: message-input;
     height: max-content;
     width: 100%;
     background-color: hsl(219, 30%, 6%);
@@ -204,7 +225,7 @@ h3
     box-shadow: rgba(2, 0, 148, 0.25) 0 0 1rem;
 }
 
-.msg-input textarea
+.message-input textarea
 {
     width: 100%;
     height: 40px;
@@ -220,7 +241,12 @@ h3
     resize: none;
 }
 
-.msg-input .file-input
+.message-input textarea.expanded
+{
+    border-radius: 1rem;
+}
+
+.message-input .file-input
 {
     border: 0;
     clip: rect(0, 0, 0, 0);
@@ -232,7 +258,7 @@ h3
     width: 1px; 
 }
 
-.msg-input .custom-file-input
+.message-input .custom-file-input
 {
     width: 2.5rem;
     aspect-ratio: 1 / 1;
@@ -242,25 +268,26 @@ h3
     place-content: center;
 }
 
-.msg-input .custom-file-input img
+.message-input .custom-file-input span
 {
     transform: rotate(45deg);
+    color: #eee;
 }
 
-.msg-input .file-input:focus-visible + .custom-file-input,
-.msg-input .file-input + .custom-file-input:hover
+.message-input .file-input:focus-visible + .custom-file-input,
+.message-input .file-input + .custom-file-input:hover
 {
     background: hsl(219, 10%, 20%);
 }
 
-.msg-input .btn-send
+.message-input .btn-send
 {
     cursor: pointer;
     display: none;
     height: fit-content;
 }
 
-.msg-input .btn-send img
+.message-input .btn-send img
 {
     height: 2rem;
     display: block;
@@ -278,7 +305,8 @@ h3
 .big-image-container .big-image
 {
     position: absolute;
-    max-width: 95%;
+    max-width: 90%;
+    max-height: 90%;
     transform: translate(-50%, -50%);
     top: 50%;
     left: 50%;
@@ -295,7 +323,7 @@ h3
             "chat-info"
             "chat-box"
             "attachment-preview"
-            "msg-input";
+            "message-input";
     }
 
     .join-form
@@ -349,12 +377,12 @@ h3
     }
 
     /* TODO: Fix size changing after message overflows */
-    .chat-box .msg-container.self
+    .chat-box .message-container.self
     {
         justify-content: flex-end;
     }
     
-    .msg-input .btn-send
+    .message-input .btn-send
     {
         display: block;
     }

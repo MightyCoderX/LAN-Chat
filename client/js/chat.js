@@ -1,12 +1,17 @@
+const form = document.querySelector('form.login-form');
+const txtUsername = document.getElementById('txtUsername');
+const pError = document.querySelector('p.error');
+
 const chatBox = document.querySelector('.chat-box');
 const txtMsg = document.getElementById('txtMsg');
 const btnSend = document.querySelector('.btn-send');
-const imageInput = document.querySelector(".file-input");
+const imageInput = document.querySelector('.file-input');
 const customInput = imageInput.nextElementSibling;
 const usersList = document.querySelector('.users-list');
 const bigImageContainer = document.querySelector('.big-image-container');
 const bigImage = document.querySelector('.big-image');
 const attachmentPreview = document.querySelector('.attachment-preview');
+const btnClearAttachments = document.getElementById('btnClearAttachments');
 
 let localUser = { username: '', id: '' };
 
@@ -16,47 +21,83 @@ if(Notification.permission !== 'denied')
 }
 
 let socket = io(location.origin);
+
 socket.on('connect', () =>
 {
+    //TODO: Fix auto login & increase image margin top
+    if(localStorage.getItem('username'))
+    {
+        return login(localStorage.getItem('username'));
+    }
+
+    console.log('Connected to the server!', form);
+    
+    txtUsername.focus();
+
+    document.querySelector('.login-form-container').classList.remove('hidden');
     form.addEventListener('submit', e =>
     {
+        console.log('Form submitted!');
         e.preventDefault();
 
         const formData = new FormData(form);
         const formUsername = formData.get('username');
 
-        socket.emit('join', formUsername);
-        
-        socket.on('join', user => 
-        {
-            localUser = user;
-
-            localStorage.setItem('username', formUsername);
-
-            document.querySelector('.join-form-container').classList.add('hidden');
-
-            onJoin();
-        });
-
-        socket.on('join_error', errorMessage =>
-        {
-            socket = io(location.origin);
-            pError.innerText = errorMessage;
-            pError.classList.add('shown');
-        });
+        login(formUsername);
     });
 });
 
+function login(username)
+{
+    socket.emit('login', username);
+        
+    socket.on('login', user => 
+    {
+        localUser = user;
+
+        localStorage.setItem('username', username);
+
+        document.querySelector('.login-form-container').classList.add('hidden');
+
+        onJoin();
+    });
+
+    socket.on('login_error', errorMessage =>
+    {
+        socket = io(location.origin);
+        pError.innerText = errorMessage;
+        pError.classList.add('shown');
+    });
+}
+
 function onJoin()
 {
-    
     document.title += ` - ${localUser.username}`;
     txtMsg.focus();
 
+    btnClearAttachments.addEventListener('click', () =>
+    {
+        attachmentPreview.querySelectorAll('.item').forEach(e => e.remove());
+        attachmentPreview.classList.remove('shown');
+    });
+
     txtMsg.addEventListener('input', e =>
     {
+        console.log(+txtMsg.style.height.replace('px', ''), +getComputedStyle(txtMsg).height.replace('px', ''));
+        if(+txtMsg.style.height.replace('px', '') > +getComputedStyle(txtMsg).height.replace('px', ''))
+        {
+            txtMsg.classList.add('expanded');
+        }
+        else
+        {
+            txtMsg.classList.remove('expanded');
+        }
+        
         txtMsg.style.height = '40px';
         txtMsg.style.height = txtMsg.scrollHeight + 'px';
+     
+        
+
         if(formattedMessageText())
         {
             socket.emit('typing', true);
@@ -76,8 +117,8 @@ function onJoin()
     {
         if(imageInput.files.length == 0) return;
         txtMsg.focus();
-        attachmentPreview.style.padding = '0.5rem';
-        attachmentPreview.innerHTML = '';
+        attachmentPreview.classList.add('shown');
+        attachmentPreview.querySelectorAll('.item').forEach(e => e.remove());
         Array.from(imageInput.files).forEach(file =>
         {
             addPreviewItem(file);
@@ -194,8 +235,8 @@ function sendMessage()
 {
     if(imageInput.files[0])
     {
-        attachmentPreview.style.padding = '0';
-        attachmentPreview.innerHTML = '';
+        attachmentPreview.classList.remove('shown');
+        attachmentPreview.querySelectorAll('.item').forEach(e => e.remove());
         socket.emit('send_file', { content: formattedMessageText(), file: imageInput.files[0] });
     }
     else
@@ -229,10 +270,10 @@ function escapeHtml(text)
 function addMessage(user, content, timestamp, imageBuffer)
 {
     const messageContainer = document.createElement('div');
-    messageContainer.classList.add('msg-container');
+    messageContainer.classList.add('message-container');
 
     const messageDiv = document.createElement('div');
-    messageDiv.classList.add('msg');
+    messageDiv.classList.add('message');
 
     const pUsername = document.createElement('p');
     pUsername.classList.add('username');
@@ -255,6 +296,7 @@ function addMessage(user, content, timestamp, imageBuffer)
     if(imageBuffer)
     {
         const image = document.createElement('img');
+        image.loading = 'lazy';
         image.src = 'data:image/webp;base64,' + imageBuffer;
         
         messageDiv.appendChild(image);
@@ -287,7 +329,7 @@ function addMessage(user, content, timestamp, imageBuffer)
 function addJoined(nick)
 {
     const joinMsgDiv = document.createElement('div');
-    joinMsgDiv.classList.add('system-msg');
+    joinMsgDiv.classList.add('system-message');
 
     if(nick != localUser.username)
     {
@@ -305,7 +347,7 @@ function addJoined(nick)
 function addLeft(uname)
 {
     const leftMsgDiv = document.createElement('div');
-    leftMsgDiv.classList.add('system-msg');
+    leftMsgDiv.classList.add('system-message');
 
     if(uname != localUser.username)
     {
@@ -320,7 +362,7 @@ function createIsTyping(user)
 {
     const isTypingDiv = document.createElement('div');
     isTypingDiv.setAttribute('data-user', user.id);
-    isTypingDiv.classList.add('system-msg');
+    isTypingDiv.classList.add('system-message');
     isTypingDiv.textContent = `${user.username} is typing...`;
 
     return isTypingDiv;
