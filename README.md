@@ -26,6 +26,7 @@ A simple socket chat made with [socket.io](https://socket.io/)
 - [x] Revert back to sockets for user login
 - [x] Add button to clear attachments
 - [ ] Use HTML Custom Elements
+- [ ] Update UI/UX (put chatname and users online at the top, etc...)
 - [ ] Send notifications from webworker
 - [ ] Use custom scrollbars instead of the ugly default ones
 - [ ] Fix filenames and variable names for consistency's sake
