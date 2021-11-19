@@ -270,68 +270,36 @@ function addPreviewItem(file)
     document.querySelector('.attachment-preview').appendChild(previewItem);
 }
 
-function escapeHtml(text)
-{
-    return text
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;');
-}
 
 function addMessage(user, content, timestamp, imageBuffer)
 {
-    const messageContainer = document.createElement('div');
-    messageContainer.classList.add('message-container');
-
-    const messageDiv = document.createElement('div');
-    messageDiv.classList.add('message');
-
-    const pUsername = document.createElement('p');
-    pUsername.classList.add('username');
-    pUsername.textContent = user.username;
-    messageDiv.appendChild(pUsername);
-
+    const message = document.createElement('chat-message');
+    message.setAttribute('username', user.username);
+    
     if(content)
     {
-        const pContent = document.createElement('p');
-        pContent.classList.add('content');
-        pContent.innerHTML = marked.marked(escapeHtml(content));
-        messageDiv.appendChild(pContent);
+        message.setAttribute('content', content);
     }
 
-    const smallTimestamp = document.createElement('small');
-    smallTimestamp.classList.add('timestamp');
-    smallTimestamp.textContent = (new Date(timestamp)).toLocaleString();
-
+    message.setAttribute('timestamp', (new Date(timestamp)).toLocaleString());
     
     if(imageBuffer)
     {
-        const image = document.createElement('img');
-        image.loading = 'lazy';
-        image.src = 'data:image/webp;base64,' + imageBuffer;
-        
-        messageDiv.appendChild(image);
-        image.addEventListener('click', e =>
-        {
-            openImage(image.src);
-        });
+        message.setAttribute('img', 'data:image/webp;base64,' + imageBuffer)
     }
-    
-    messageDiv.appendChild(smallTimestamp);
-    messageContainer.appendChild(messageDiv);
 
     if(localUser.username === user.username)
     {
-        messageContainer.classList.add('self');
+        message.setAttribute('self', true);
     }
 
     if(localUser.username === user.username || !chatBox.querySelector(`[data-user="${user.id}"]`))
     {
-        chatBox.appendChild(messageContainer);
+        chatBox.appendChild(message);
     }
     else
     {
-        chatBox.querySelector(`[data-user="${user.id}"]`).replaceWith(messageContainer);
+        chatBox.querySelector(`[data-user="${user.id}"]`).replaceWith(message);
     }
 
     chatBox.scrollTo(0, chatBox.scrollHeight+100);
@@ -339,44 +307,41 @@ function addMessage(user, content, timestamp, imageBuffer)
 
 function addJoined(nick)
 {
-    const joinMsgDiv = document.createElement('div');
-    joinMsgDiv.classList.add('system-message');
+    const systemMessage = document.createElement('system-message');
 
     if(nick != localUser.username)
     {
-        joinMsgDiv.textContent = `${nick} joined the chat!`;
+        systemMessage.setAttribute('content', `${nick} joined the chat!`);
     }
     else
     {
-        joinMsgDiv.textContent = `You joined the chat!`;
+        systemMessage.setAttribute('content', `You joined the chat!`);
     }
 
-    chatBox.appendChild(joinMsgDiv);
+    chatBox.appendChild(systemMessage);
     chatBox.scrollTo(0, chatBox.scrollHeight+100);
 }
 
 function addLeft(uname)
 {
-    const leftMsgDiv = document.createElement('div');
-    leftMsgDiv.classList.add('system-message');
+    const systemMessage = document.createElement('system-message');
 
     if(uname != localUser.username)
     {
-        leftMsgDiv.textContent = `${uname} left the chat!`;
+        systemMessage.setAttribute('content', `${uname} left the chat!`);
     }
 
-    chatBox.appendChild(leftMsgDiv);
+    chatBox.appendChild(systemMessage);
     chatBox.scrollTo(0, chatBox.scrollHeight+100);
 }
 
 function createIsTyping(user)
 {
-    const isTypingDiv = document.createElement('div');
-    isTypingDiv.setAttribute('data-user', user.id);
-    isTypingDiv.classList.add('system-message');
-    isTypingDiv.textContent = `${user.username} is typing...`;
+    const systemMessage = document.createElement('system-message');
+    systemMessage.setAttribute('data-user', user.id);
+    systemMessage.systemMessage.setAttribute('content', `${user.username} is typing...`);
 
-    return isTypingDiv;
+    return systemMessage;
 }
 
 function openImage(dataUrl)

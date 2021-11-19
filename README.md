@@ -25,11 +25,10 @@ A simple socket chat made with [socket.io](https://socket.io/)
 - [x] Make it a working PWA
 - [x] Revert back to sockets for user login
 - [x] Add button to clear attachments
-- [ ] Use HTML Custom Elements
+- [x] Use HTML Web Components
+- [x] Style scrollbars to improve the ugly default look
 - [ ] Update UI/UX (put chatname and users online at the top, etc...)
 - [ ] Send notifications from webworker
-- [ ] Use custom scrollbars instead of the ugly default ones
-- [ ] Fix filenames and variable names for consistency's sake
+- [ ] Fix filenames and variable names for consistency
 - [ ] Limit markdown elements in messages
-- [ ] Organize everything using OOP
 - [ ] Use a Database

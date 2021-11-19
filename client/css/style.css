@@ -33,8 +33,6 @@ h3
     font-weight: 500;
 }
 
-
-
 .chat-info
 {
     grid-area: chat-info;
@@ -86,94 +84,6 @@ h3
     width: 100%;
     padding: 1rem;
     overflow-y: auto;
-}
-
-.chat-box .message-container
-{
-    display: flex;
-}
-
-.chat-box .message
-{
-    background: hsl(219, 30%, 12%);
-    padding: 0.5rem;
-    margin: 0.5rem 0;
-    display: flex;
-    flex-direction: column;
-    border-radius: 0.5rem;
-    min-width: 10em;
-    width: max-content;
-    max-width: 70%;
-    gap: 0.4rem;
-}
-
-.chat-box .message-container.self .message
-{
-    background: hsl(219, 60%, 15%);
-}
-
-.chat-box .system-message
-{   
-    background: hsl(219, 40%, 12%);
-    padding: 0.5rem 1.2rem;
-    color: white;
-    font-weight: 400;
-    font-size: 0.9rem;
-    text-align: center;
-    margin: 1rem auto;
-    width: max-content;
-    border-radius: 100vw;
-}
-
-.chat-box .message .username
-{
-    color: #fff;
-    font-weight: 500;
-    font-size: 0.85rem;
-}
-
-.chat-box .message .content
-{
-    color: #ccc;
-    overflow-wrap: break-word;
-    font-weight: 200;
-    font-size: 0.9rem;
-}
-
-.chat-box .message .content *
-{
-    padding: revert;
-    margin: revert;
-}
-
-.chat-box .message .content :first-child
-{
-    margin-top: 0;
-}
-
-.chat-box .message .content :last-child
-{
-    margin-bottom: 0;
-}
-
-.chat-box .message .content strong
-{
-    font-weight: 500;
-}
-
-.chat-box .message .timestamp
-{
-    display: block;
-    color: #777;
-    font-size: 0.7rem;
-    text-align: right;
-}
-
-.chat-box .message img
-{
-    display: block;
-    max-width: 30vw;
-    border-radius: inherit;
 }
 
 .attachment-preview
@@ -284,8 +194,13 @@ h3
 .message-input .btn-send
 {
     cursor: pointer;
-    display: none;
+    display: block;
     height: fit-content;
+}
+
+.message-input .btn-send:hover
+{
+    opacity: 0.75;
 }
 
 .message-input .btn-send img
@@ -293,6 +208,7 @@ h3
     height: 2rem;
     display: block;
 }
+
 
 .big-image-container
 {
@@ -381,10 +297,5 @@ h3
     .chat-box .message-container.self
     {
         justify-content: flex-end;
-    }
-    
-    .message-input .btn-send
-    {
-        display: block;
     }
 }

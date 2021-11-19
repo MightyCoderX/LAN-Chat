@@ -1,0 +1,76 @@
+@import url('style.css');
+
+.message-container
+{
+    display: flex;
+}
+
+.message
+{
+    background: hsl(219, 30%, 12%);
+    padding: 0.5rem;
+    margin: 0.5rem 0;
+    display: flex;
+    flex-direction: column;
+    border-radius: 0.5rem;
+    min-width: 10em;
+    width: max-content;
+    max-width: 70%;
+    gap: 0.4rem;
+}
+
+.message-container.self .message
+{
+    background: hsl(219, 60%, 15%);
+}
+
+.message .username
+{
+    color: #fff;
+    font-weight: 500;
+    font-size: 0.85rem;
+}
+
+.message .content
+{
+    color: #ccc;
+    overflow-wrap: break-word;
+    font-weight: 200;
+    font-size: 0.9rem;
+}
+
+.message .content *
+{
+    padding: revert;
+    margin: revert;
+}
+
+.message .content :first-child
+{
+    margin-top: 0;
+}
+
+.message .content :last-child
+{
+    margin-bottom: 0;
+}
+
+.message .content strong
+{
+    font-weight: 500;
+}
+
+.message .timestamp
+{
+    display: block;
+    color: #777;
+    font-size: 0.7rem;
+    text-align: right;
+}
+
+.message img
+{
+    display: block;
+    max-width: 30vw;
+    border-radius: inherit;
+}

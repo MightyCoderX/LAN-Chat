@@ -20,8 +20,11 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.2/socket.io.js" integrity="sha512-zN6KYOtONNTOGXz0RkWX2EpavN9VdIs+2w+To+fhciFv83YA9maUpi2lzZWrOfKXdFIZZomWufBznkyHi3a8oQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
         <script src="https://unpkg.com/simplebar@latest/dist/simplebar.min.js"></script>
+        <script src="js/components/Message.js"></script>
+        <script src="js/components/SystemMessage.js"></script>
         <script defer src="js/app.js"></script>
         <script defer src="js/chat.js"></script>
+
     </head>
     <body>
         <aside class="chat-info">
@@ -56,18 +59,6 @@
             <div class="big-image-container">
                 <img class="big-image">
             </div>
-            <template id="message">
-                <div class="message-container">
-                    <div class="message">
-                        <p class="username" id="username"></p>
-                        <p class="content" id="content"></p>
-                        <small class="timestamp"></small>
-                    </div>
-                </div>
-            </template>
-            <template id="system-message">
-                <div class="system-message"></div>
-            </template>
         </div>
         <div class="attachment-preview">
             <button id="btnClearAttachments" class="btn-clear">
