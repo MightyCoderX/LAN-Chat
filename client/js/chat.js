@@ -140,6 +140,7 @@ function onJoin()
     {
         if(e.key === 'Enter' && !e.shiftKey)
         {
+            e.preventDefault();
             sendMessage();
         }
     });
